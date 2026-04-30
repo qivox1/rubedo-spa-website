@@ -2,6 +2,13 @@
 
 > Diese Datei ergänzt die `CLAUDE.md` im Parent-Folder mit Code-spezifischen Konventionen.
 
+## Wichtige URLs
+
+- **Repo:** https://github.com/qivox1/rubedo-spa-website
+- **Live (Preview):** https://rubedo-spa-website.pages.dev/
+- **Cloudflare-Dashboard:** https://dash.cloudflare.com/b06227057f92fef01d11a9bb1271af13/pages/view/rubedo-spa-website
+- **Spätere Production-Domain:** https://rubedo-spa.de (DNS via domainfactory, CNAME beim Launch)
+
 ## Routing
 
 - `output: 'static'`, `trailingSlash: 'always'`, `build.format: 'directory'` (siehe `astro.config.mjs`).
