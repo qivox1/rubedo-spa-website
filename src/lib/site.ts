@@ -59,15 +59,46 @@ export const site = {
     embedUrl: '', // z.B. https://calendar.google.com/calendar/appointments/schedules/...
   },
 
-  // Hauptnavigation
+  // Hauptnavigation — `children` optional für Untermenüs (zweite Ebene).
+  // Wird auf Mobile als Accordion gerendert, auf Desktop könnte später ein Mega-Menü folgen.
   nav: [
     { label: 'Philosophie', href: '/philosophie/' },
-    { label: 'DNA Skin', href: '/dna-skin-intelligence/' },
-    { label: 'Kryo Vital', href: '/kryo-vital/' },
-    { label: 'Inner Source', href: '/inner-source/' },
+    {
+      label: 'DNA Skin',
+      href: '/dna-skin-intelligence/',
+      children: [
+        { label: 'DNA Skin Intelligence', href: '/dna-skin-intelligence/', description: 'Personalisierte Hautpflege auf Basis von 20 Beauty-Genen.' },
+      ],
+    },
+    {
+      label: 'Kryo Vital',
+      href: '/kryo-vital/',
+      children: [
+        { label: 'Kryo Vital · Übersicht', href: '/kryo-vital/', description: 'Drei Minuten kontrollierter Kältereiz für Vitalität.' },
+        { label: 'Körperformung', href: '/kryo-vital/koerperformung/', description: 'Druckwellen, Wraps und Bandagen für klares Körpergefühl.' },
+      ],
+    },
+    {
+      label: 'Inner Source',
+      href: '/inner-source/',
+      children: [
+        { label: 'Inner Source Rituals', href: '/inner-source/', description: 'Atem, Berührung und Stille als Tiefenarbeit.' },
+      ],
+    },
     { label: 'Monica', href: '/ueber-monica/' },
-    { label: 'Magazin', href: '/magazin/' },
+    {
+      label: 'Magazin',
+      href: '/magazin/',
+      children: [
+        { label: 'Alle Beiträge', href: '/magazin/' },
+        { label: 'Wellness & Spa', href: '/magazin/kategorie/wellness-und-spa/' },
+        { label: 'Kryotherapie', href: '/magazin/kategorie/kryotherapie/' },
+      ],
+    },
+    { label: 'Kontakt', href: '/kontakt/' },
   ],
 } as const;
 
 export type Site = typeof site;
+export type NavItem = (typeof site.nav)[number];
+export type NavChild = NavItem extends { children: infer C } ? (C extends readonly (infer X)[] ? X : never) : never;
