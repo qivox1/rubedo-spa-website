@@ -1,113 +1,308 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ArticleCard from '@/components/ArticleCard.astro';
 
-const title = 'Magazin — Wohlfühl-Wissen aus dem Rubedo Spa';
+const title = 'Magazin — Notizen aus dem Studio';
 const description =
-  'Beiträge zu Smart Beauty, Longevity, Hautwissen, Kryotherapie und bewussten Wellness-Routinen — von Monica Galletti & dem Rubedo-Team.';
+  'Notizen aus dem Studio. Über die Technologie hinter sichtbarer Wirkung, die Rituale dahinter, und die Frage, wie sich Schönheit anfühlt, wenn man sie ernst nimmt.';
 
 // Alle Artikel laden, Drafts ausschließen, sortiert nach Datum (neueste zuerst)
 const all = await getCollection('magazin', ({ data }) => !data.draft);
 const articles = all.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
 const featured = articles.find((a) => a.data.featured) ?? articles[0];
+const featuredAuthor = featured ? await getEntry(featured.data.author) : null;
 const rest = articles.filter((a) => a.slug !== featured?.slug);
 
-// Kategorien — als Filter-Chips
-const categorySlug = (cat: string) =>
-  cat
-    .toLowerCase()
-    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+// --- Mapping: Astro-Category → CSS-Modifier (wellness | kryo | haut | ritual) ---
+const catClass = (cat: string): 'wellness' | 'kryo' | 'haut' | 'ritual' => {
+  switch (cat) {
+    case 'Kryotherapie':       return 'kryo';
+    case 'Hautwissen':
+    case 'DNA Skin':           return 'haut';
+    case 'Inner Source':       return 'ritual';
+    case 'Wellness und Spa':
+    case 'Longevity':
+    case 'Studio-Einblick':
+    default:                   return 'wellness';
+  }
+};
 
-const categories = Array.from(new Set(articles.map((a) => a.data.category))).sort();
+// --- Edition (Heft-Anmutung): Monat + Jahr aus dem neuesten Artikel ---
+const editionDate = articles[0]?.data.pubDate ?? new Date();
+const month = new Intl.DateTimeFormat('de-DE', { month: 'long' }).format(editionDate);
+const year = editionDate.getFullYear();
+const editionNo = String(((editionDate.getMonth() + 1) % 12) || 12).padStart(2, '0');
+
+// Sichtbar-zähl-Filter (Anzahl pro CSS-Modifier)
+const filterCounts = articles.reduce<Record<string, number>>((acc, a) => {
+  const k = catClass(a.data.category);
+  acc[k] = (acc[k] ?? 0) + 1;
+  return acc;
+}, {});
+
+// Datums-Formatter
+const fmtDate = (d: Date) =>
+  new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+
+// Featured-Author Initialen für Avatar
+const initials = (name: string) =>
+  name.split(' ').map((s) => s[0]).slice(0, 2).join('').toUpperCase();
+
+// Themenwelten — feste Vier (Layout-Anker, Counts dynamisch)
+const worlds: { num: string; cat: 'wellness' | 'kryo' | 'haut' | 'ritual'; title: string; lead: string; image: string }[] = [
+  { num: '01', cat: 'wellness', title: 'Wellness & Spa',  lead: 'Was modernes Wellness wirklich bedeutet — jenseits von Sauna und Aufguss.', image: '/images/rubedo-suite-hero.webp' },
+  { num: '02', cat: 'kryo',     title: 'Kryotherapie',   lead: 'Kälte als Werkzeug. Regeneration, Fokus, Performance — wissenschaftlich gedacht.', image: '/images/kryo-vital-hero.webp' },
+  { num: '03', cat: 'haut',     title: 'Hautintelligenz', lead: 'DNA-basierte Hautanalyse, Apothekerformulierungen, präzise Routinen.', image: '/images/dna-skin-hero.webp' },
+  { num: '04', cat: 'ritual',   title: 'Rituale & Atem',  lead: 'Inner Source: Atemarbeit, Stillearbeit und das, was nach der Behandlung bleibt.', image: '/images/inner-source-hero.webp' },
+];
+
+// Asymmetrie-Layout: erstes & siebtes Element wird "lg" gerendert (analog Standalone)
+const isLg = (i: number) => i === 0;
+const isLgRight = (i: number) => i === 6;
 ---
 
 <BaseLayout title={title} description={description}>
   <article class="rb-page" data-page="magazin">
 
-    <section class="rb-section rb-section--paper">
+    {/* HERO · Editorial Masthead */}
+    <section class="rb-magov-hero">
       <div class="rb-wrap">
+        <nav class="rb-magov-hero__crumbs" aria-label="Breadcrumb">
+          <a href="/">Startseite</a>
+          <span class="sep">/</span>
+          <span>Magazin</span>
+        </nav>
+        <div class="rb-magov-hero__masthead">
+          <span class="rb-magov-hero__edition">Ausgabe N°&nbsp;{editionNo} · {month} {year}</span>
+          <h1 class="rb-magov-hero__title">Magazin</h1>
+          <span class="rb-magov-hero__edition rb-magov-hero__edition--right">Rubedo Spa · Minden</span>
+        </div>
+        <p class="rb-magov-hero__lead">
+          Notizen aus dem Studio. Über die Technologie hinter sichtbarer Wirkung, die Rituale dahinter, und die Frage, wie sich Schönheit anfühlt, wenn man sie ernst nimmt.
+        </p>
+        <div class="rb-magov-filter" role="tablist" aria-label="Themenkategorien">
+          <button class="rb-magov-filter__chip is-active" data-cat="alle" role="tab" aria-selected="true" type="button">
+            Alle Beiträge <span class="rb-magov-filter__count">{articles.length}</span>
+          </button>
+          {filterCounts.wellness && (
+            <button class="rb-magov-filter__chip" data-cat="wellness" role="tab" aria-selected="false" type="button">
+              Wellness &amp; Spa <span class="rb-magov-filter__count">{filterCounts.wellness}</span>
+            </button>
+          )}
+          {filterCounts.kryo && (
+            <button class="rb-magov-filter__chip" data-cat="kryo" role="tab" aria-selected="false" type="button">
+              Kryotherapie <span class="rb-magov-filter__count">{filterCounts.kryo}</span>
+            </button>
+          )}
+          {filterCounts.haut && (
+            <button class="rb-magov-filter__chip" data-cat="haut" role="tab" aria-selected="false" type="button">
+              Hautintelligenz <span class="rb-magov-filter__count">{filterCounts.haut}</span>
+            </button>
+          )}
+          {filterCounts.ritual && (
+            <button class="rb-magov-filter__chip" data-cat="ritual" role="tab" aria-selected="false" type="button">
+              Rituale &amp; Atem <span class="rb-magov-filter__count">{filterCounts.ritual}</span>
+            </button>
+          )}
+        </div>
+      </div>
+    </section>
 
-        <header class="rb-magazin-header">
-          <span class="rb-eyebrow">Magazin</span>
-          <h1 class="rb-display">Wohlfühl-Wissen aus dem Studio.</h1>
-          <p class="rb-magazin-header__intro">
-            Themen rund um bewusste Schönheit, Longevity und die Methoden, die wir bei
-            Rubedo Spa täglich nutzen — kurz erklärt, ehrlich eingeordnet.
-          </p>
-        </header>
-
-        {categories.length > 0 && (
-          <nav class="rb-magazin-cats" aria-label="Kategorien">
-            <a href="/magazin/" class="is-active">Alle</a>
-            {categories.map((cat) => (
-              <a href={`/magazin/kategorie/${categorySlug(cat)}/`}>{cat}</a>
-            ))}
-          </nav>
-        )}
-
-        {featured && (
-          <div class="rb-magazin-featured" data-reveal>
-            <ArticleCard entry={featured} featured />
+    {/* FEATURED ARTICLE */}
+    {featured && featuredAuthor && (
+      <section class="rb-section rb-section--paper rb-magov-featured">
+        <div class="rb-wrap">
+          <div class="rb-magov-featured__grid">
+            <a class="rb-magov-featured__media" href={`/magazin/${featured.slug}/`} aria-label={`${featured.data.title} — zum Artikel`}>
+              <span class="rb-magov-featured__badge">Editor's Pick</span>
+              <img src={featured.data.heroImage} alt={featured.data.heroImageAlt} loading="eager" fetchpriority="high" />
+            </a>
+            <div class="rb-magov-featured__body">
+              <div class="rb-magov-featured__eyebrow">
+                <span class={`rb-magov-cat rb-magov-cat--${catClass(featured.data.category)}`}>{featured.data.category}</span>
+                <span class="rb-magov-featured__sep" aria-hidden="true"></span>
+                <span class="rb-magov-featured__date">{fmtDate(featured.data.pubDate)}</span>
+              </div>
+              <h2 class="rb-magov-featured__title">
+                <a href={`/magazin/${featured.slug}/`}>{featured.data.title}</a>
+              </h2>
+              <p class="rb-magov-featured__dek">{featured.data.excerpt ?? featured.data.description}</p>
+              <div class="rb-magov-featured__meta">
+                <div class="rb-magov-featured__author">
+                  <div class="rb-magov-featured__avatar" aria-hidden="true">{initials(featuredAuthor.data.name)}</div>
+                  <div>
+                    <div class="rb-magov-featured__author-name">{featuredAuthor.data.name}</div>
+                    <div class="rb-magov-featured__author-role">{featuredAuthor.data.role}</div>
+                  </div>
+                </div>
+                {featured.data.readingTime && (
+                  <span class="rb-magov-featured__readtime">{featured.data.readingTime} Min. Lesezeit</span>
+                )}
+              </div>
+              <a class="rb-btn rb-btn--primary" href={`/magazin/${featured.slug}/`}>Artikel lesen</a>
+            </div>
           </div>
-        )}
+        </div>
+      </section>
+    )}
 
-        {rest.length > 0 && (
-          <div class="rb-magazin-grid">
-            {rest.map((entry) => <ArticleCard entry={entry} />)}
+    {/* THEMENWELTEN */}
+    <section class="rb-section rb-section--cream rb-magov-worlds">
+      <div class="rb-wrap">
+        <div class="rb-section-head">
+          <span class="rb-eyebrow">Themenwelten</span>
+          <h2 class="rb-section-head__title">Wo das Magazin hinschaut</h2>
+          <p class="rb-section-head__lead">Vier Themenfelder, die unsere Arbeit prägen. Jedes mit eigenem Ton — gemeinsamem Anspruch.</p>
+        </div>
+        <div class="rb-magov-worlds__grid">
+          {worlds.map((w) => (
+            <a class="rb-magov-world" href={`#${w.cat}`} data-cat={w.cat}>
+              <div class="rb-magov-world__media"><img src={w.image} alt="" loading="lazy" /></div>
+              <div class="rb-magov-world__body">
+                <span class="rb-magov-world__num">{w.num}</span>
+                <h3 class="rb-magov-world__title">{w.title}</h3>
+                <p class="rb-magov-world__text">{w.lead}</p>
+                <span class="rb-magov-world__count">{filterCounts[w.cat] ?? 0} Artikel →</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ARTIKEL-INDEX · asymmetrisches Editorial-Grid */}
+    <section class="rb-section rb-section--paper rb-magov-index">
+      <div class="rb-wrap">
+        <div class="rb-magov-index__head">
+          <div>
+            <span class="rb-eyebrow">Aktuelle Beiträge</span>
+            <h2 class="rb-section-head__title">Im Atelier notiert</h2>
           </div>
-        )}
+          <div class="rb-magov-index__sort">
+            <span class="rb-magov-index__sort-label">Sortieren</span>
+            <select class="rb-magov-index__select" aria-label="Sortierung" id="rb-magov-sort">
+              <option value="newest">Neueste zuerst</option>
+              <option value="longest">Längste Lesezeit</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="rb-magov-grid" id="rb-magov-grid">
+          {rest.map((entry, i) => {
+            const cls = catClass(entry.data.category);
+            const lg = isLg(i);
+            const lgRight = isLgRight(i);
+            return (
+              <a
+                class={`rb-magov-card${lg ? ' rb-magov-card--lg' : ''}${lgRight ? ' rb-magov-card--lg rb-magov-card--lg-right' : ''}`}
+                href={`/magazin/${entry.slug}/`}
+                data-cat={cls}
+                data-rt={entry.data.readingTime ?? 0}
+                data-date={entry.data.pubDate.toISOString()}
+              >
+                <div class="rb-magov-card__media">
+                  <img src={entry.data.heroImage} alt={entry.data.heroImageAlt} loading="lazy" />
+                  <span class={`rb-magov-cat rb-magov-cat--${cls}`}>{entry.data.category}</span>
+                </div>
+                <div class="rb-magov-card__body">
+                  <span class="rb-magov-card__date">{fmtDate(entry.data.pubDate)}</span>
+                  <h3 class="rb-magov-card__title">{entry.data.title}</h3>
+                  <p class="rb-magov-card__excerpt">{entry.data.excerpt ?? entry.data.description}</p>
+                  {entry.data.readingTime && (
+                    <span class="rb-magov-card__readtime">{entry.data.readingTime} Min.</span>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+
+          {/* Editorial Quote-Card — nur einblenden, wenn überhaupt Artikel da sind */}
+          {rest.length > 2 && (
+            <article class="rb-magov-card rb-magov-card--quote" data-cat="wellness">
+              <span class="rb-magov-card__quotemark" aria-hidden="true">“</span>
+              <blockquote class="rb-magov-card__quote">Wir sind kein Spa, das Erholung verspricht. Wir sind ein Atelier, das Wirkung bezeugt.</blockquote>
+              <cite class="rb-magov-card__cite">— Monica Galletti, Gründerin Rubedo Spa</cite>
+            </article>
+          )}
+        </div>
 
         {articles.length === 0 && (
           <p class="rb-magazin-empty">Noch keine Artikel veröffentlicht.</p>
         )}
+      </div>
+    </section>
 
+    {/* NEWSLETTER · Atelier-Brief */}
+    <section class="rb-section rb-section--ink rb-magov-letter">
+      <div class="rb-wrap">
+        <div class="rb-magov-letter__grid">
+          <div class="rb-magov-letter__copy">
+            <span class="rb-eyebrow rb-eyebrow--gold">Atelier-Brief</span>
+            <h2 class="rb-magov-letter__title">Ein Brief im Monat. <em>Mehr nicht.</em></h2>
+            <p class="rb-magov-letter__lead">
+              Neue Artikel, gelegentliche Notizen aus dem Studio in Minden, einmal im Monat in Ihrem Postfach. Keine Angebote, keine Pop-ups, kein Tracking.
+            </p>
+            <ul class="rb-magov-letter__features">
+              <li>Lange Texte, sorgfältig redigiert</li>
+              <li>Behind-the-scenes aus dem Atelier</li>
+              <li>Jederzeit kündbar — ein Klick</li>
+            </ul>
+          </div>
+          <form class="rb-magov-letter__form" action="/kontakt/" method="get" novalidate>
+            <label class="rb-magov-letter__label" for="rb-mag-name">Wie dürfen wir Sie nennen?</label>
+            <input class="rb-magov-letter__input" id="rb-mag-name" name="name" type="text" placeholder="Vorname" autocomplete="given-name" />
+            <label class="rb-magov-letter__label" for="rb-mag-mail">E-Mail-Adresse</label>
+            <input class="rb-magov-letter__input" id="rb-mag-mail" name="email" type="email" placeholder="ihre@adresse.de" autocomplete="email" required />
+            <button class="rb-btn rb-btn--primary rb-magov-letter__submit" type="submit">Atelier-Brief abonnieren</button>
+            <p class="rb-magov-letter__note">Ihre Daten bleiben bei uns. Datenschutz nach DSGVO. Abmeldung mit einem Klick in jeder Mail.</p>
+          </form>
+        </div>
       </div>
     </section>
 
   </article>
 </BaseLayout>
 
+<script>
+  // -- Filter-Chips: blendet Karten je Kategorie ein/aus
+  const chips = document.querySelectorAll<HTMLButtonElement>('.rb-magov-filter__chip');
+  const grid  = document.getElementById('rb-magov-grid');
+
+  if (chips.length && grid) {
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => {
+          c.classList.toggle('is-active', c === chip);
+          c.setAttribute('aria-selected', c === chip ? 'true' : 'false');
+        });
+        const target = chip.dataset.cat;
+        const cards = grid.querySelectorAll<HTMLElement>('[data-cat]');
+        cards.forEach((card) => {
+          const show = target === 'alle' || card.dataset.cat === target;
+          card.style.display = show ? '' : 'none';
+        });
+      });
+    });
+  }
+
+  // -- Sort: Neueste / Längste Lesezeit
+  const sort = document.getElementById('rb-magov-sort') as HTMLSelectElement | null;
+  if (sort && grid) {
+    sort.addEventListener('change', () => {
+      const cards = Array.from(grid.querySelectorAll<HTMLElement>('a.rb-magov-card'));
+      cards.sort((a, b) => {
+        if (sort.value === 'longest') {
+          return Number(b.dataset.rt ?? 0) - Number(a.dataset.rt ?? 0);
+        }
+        return new Date(b.dataset.date ?? 0).getTime() - new Date(a.dataset.date ?? 0).getTime();
+      });
+      cards.forEach((c) => grid.appendChild(c));
+    });
+  }
+</script>
+
 <style>
-  .rb-magazin-header { max-width: 720px; margin: 0 0 48px; }
-  .rb-magazin-header__intro {
-    font-family: var(--rb-font-body);
-    color: var(--rb-ink-500);
-    line-height: var(--rb-leading-loose);
-    font-size: var(--rb-text-md);
-    margin-top: 16px;
-  }
-  .rb-magazin-cats {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    margin-bottom: 48px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--rb-ink-100);
-  }
-  .rb-magazin-cats a {
-    padding: 8px 16px;
-    border: 1px solid var(--rb-ink-300);
-    border-radius: var(--rb-radius-pill);
-    text-decoration: none;
-    color: var(--rb-ink-700);
-    font-family: var(--rb-font-body);
-    font-size: var(--rb-text-sm);
-    transition: all var(--rb-dur-1) var(--rb-ease);
-  }
-  .rb-magazin-cats a:hover { border-color: var(--rb-gold-500); color: var(--rb-gold-700); }
-  .rb-magazin-cats a.is-active {
-    background: var(--rb-ink-900);
-    color: var(--rb-gold-100);
-    border-color: var(--rb-ink-900);
-  }
-  .rb-magazin-featured { margin-bottom: 64px; }
-  .rb-magazin-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 32px;
-  }
   .rb-magazin-empty {
     text-align: center;
     padding: 48px 0;

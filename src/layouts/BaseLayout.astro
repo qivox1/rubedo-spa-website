@@ -84,6 +84,14 @@ const currentPath = Astro.url.pathname;
       <link rel="preload" as="image" href={heroImage} fetchpriority="high" />
     )}
 
+    {/* Reveal-On-Scroll Opt-In: BEVOR der erste Render passiert,
+        markieren wir das Document mit `js-reveal`. Erst dann greift
+        die CSS-Regel, die data-reveal-Elemente initial versteckt.
+        Ohne diese Klasse sind ALLE Inhalte sofort sichtbar — kein FOUC. */}
+    <script is:inline>
+      document.documentElement.classList.add('js-reveal');
+    </script>
+
     {/* View-Transitions / Astro ClientRouter */}
     <ClientRouter fallback="swap" />
 
@@ -108,22 +116,44 @@ const currentPath = Astro.url.pathname;
     {/* Cookie-Consent — am Ende des Body, damit Banner immer sichtbar */}
     <ConsentBanner />
 
-    {/* Reveal-On-Scroll: progressive enhancement, kein Bundle */}
+    {/* Reveal-On-Scroll: progressive enhancement.
+        Bereits sichtbare Elemente (above the fold) werden SOFORT freigegeben,
+        damit der Hero nicht auf den IntersectionObserver wartet. */}
     <script>
-      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
-      if ('IntersectionObserver' in window && els.length) {
-        const io = new IntersectionObserver((entries) => {
-          entries.forEach((e) => {
-            if (e.isIntersecting) {
-              e.target.classList.add('is-revealed');
-              io.unobserve(e.target);
-            }
-          });
-        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
-        els.forEach((el) => io.observe(el));
-      } else {
-        els.forEach((el) => el.classList.add('is-revealed'));
+      function initReveal() {
+        const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+        if (!els.length) return;
+
+        // Above-the-fold: synchron freigeben, kein Warten auf Observer.
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const toObserve: HTMLElement[] = [];
+        els.forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.top < vh * 0.95) {
+            el.classList.add('is-revealed');
+          } else {
+            toObserve.push(el);
+          }
+        });
+
+        if ('IntersectionObserver' in window && toObserve.length) {
+          const io = new IntersectionObserver((entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-revealed');
+                io.unobserve(e.target);
+              }
+            });
+          }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+          toObserve.forEach((el) => io.observe(el));
+        } else {
+          toObserve.forEach((el) => el.classList.add('is-revealed'));
+        }
       }
+
+      initReveal();
+      // Bei View-Transition-Navigation neu initialisieren.
+      document.addEventListener('astro:page-load', initReveal);
     </script>
   </body>
 </html>

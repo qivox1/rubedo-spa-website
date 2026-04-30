@@ -1,9 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ArticleCard from '@/components/ArticleCard.astro';
 
-const categorySlug = (cat: string) =>
+const slugify = (cat: string) =>
   cat.toLowerCase()
     .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
     .replace(/[^a-z0-9]+/g, '-')
@@ -12,13 +11,13 @@ const categorySlug = (cat: string) =>
 export async function getStaticPaths() {
   const all = await getCollection('magazin', ({ data }) => !data.draft);
   const cats = Array.from(new Set(all.map((a) => a.data.category)));
-  const slugify = (cat: string) =>
+  const _slug = (cat: string) =>
     cat.toLowerCase()
       .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
   return cats.map((cat) => ({
-    params: { category: slugify(cat) },
+    params: { category: _slug(cat) },
     props: { category: cat, entries: all.filter((a) => a.data.category === cat) },
   }));
 }
@@ -32,42 +31,82 @@ const sorted = entries.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.
 
 const title = `Magazin · ${category} — Rubedo Spa`;
 const description = `Beiträge aus der Kategorie „${category}" — Themen aus dem Longevity-Studio Rubedo Spa Minden.`;
+
+const catClass = (cat: string): 'wellness' | 'kryo' | 'haut' | 'ritual' => {
+  switch (cat) {
+    case 'Kryotherapie':       return 'kryo';
+    case 'Hautwissen':
+    case 'DNA Skin':           return 'haut';
+    case 'Inner Source':       return 'ritual';
+    case 'Wellness und Spa':
+    case 'Longevity':
+    case 'Studio-Einblick':
+    default:                   return 'wellness';
+  }
+};
+const fmtDate = (d: Date) =>
+  new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
 ---
 
 <BaseLayout title={title} description={description}>
   <article class="rb-page" data-page="magazin">
-    <section class="rb-section rb-section--paper">
+
+    <section class="rb-magov-hero">
       <div class="rb-wrap">
+        <nav class="rb-magov-hero__crumbs" aria-label="Breadcrumb">
+          <a href="/">Startseite</a>
+          <span class="sep">/</span>
+          <a href="/magazin/">Magazin</a>
+          <span class="sep">/</span>
+          <span>{category}</span>
+        </nav>
+        <div class="rb-magov-hero__masthead">
+          <span class="rb-magov-hero__edition">Themenwelt</span>
+          <h1 class="rb-magov-hero__title">{category}</h1>
+          <span class="rb-magov-hero__edition rb-magov-hero__edition--right">
+            {sorted.length} {sorted.length === 1 ? 'Beitrag' : 'Beiträge'}
+          </span>
+        </div>
+        <p class="rb-magov-hero__lead">
+          Beiträge aus der Kategorie „{category}" — Themen aus dem Longevity-Studio Rubedo Spa Minden.
+        </p>
+      </div>
+    </section>
 
-        <header class="rb-magazin-header">
-          <span class="rb-eyebrow">Magazin · Kategorie</span>
-          <h1 class="rb-display">{category}</h1>
-          <p class="rb-magazin-header__intro">
-            {sorted.length} {sorted.length === 1 ? 'Beitrag' : 'Beiträge'} in dieser Kategorie.
-            <a href="/magazin/" style="color: var(--rb-gold-700); margin-left: 8px;">← Alle Themen</a>
-          </p>
-        </header>
+    <section class="rb-section rb-section--paper rb-magov-index">
+      <div class="rb-wrap">
+        <div class="rb-magov-grid">
+          {sorted.map((entry, i) => {
+            const cls = catClass(entry.data.category);
+            const lg = i === 0;
+            return (
+              <a
+                class={`rb-magov-card${lg ? ' rb-magov-card--lg' : ''}`}
+                href={`/magazin/${entry.slug}/`}
+                data-cat={cls}
+              >
+                <div class="rb-magov-card__media">
+                  <img src={entry.data.heroImage} alt={entry.data.heroImageAlt} loading="lazy" />
+                  <span class={`rb-magov-cat rb-magov-cat--${cls}`}>{entry.data.category}</span>
+                </div>
+                <div class="rb-magov-card__body">
+                  <span class="rb-magov-card__date">{fmtDate(entry.data.pubDate)}</span>
+                  <h3 class="rb-magov-card__title">{entry.data.title}</h3>
+                  <p class="rb-magov-card__excerpt">{entry.data.excerpt ?? entry.data.description}</p>
+                  {entry.data.readingTime && (
+                    <span class="rb-magov-card__readtime">{entry.data.readingTime} Min.</span>
+                  )}
+                </div>
+              </a>
+            );
+          })}
+        </div>
 
-        <div class="rb-magazin-grid">
-          {sorted.map((entry) => <ArticleCard entry={entry} />)}
+        <div class="rb-magov-index__more">
+          <a class="rb-btn rb-btn--ghost" href="/magazin/">← Zum Magazin</a>
         </div>
       </div>
     </section>
+
   </article>
 </BaseLayout>
-
-<style>
-  .rb-magazin-header { max-width: 720px; margin: 0 0 48px; }
-  .rb-magazin-header__intro {
-    font-family: var(--rb-font-body);
-    color: var(--rb-ink-500);
-    line-height: var(--rb-leading-loose);
-    font-size: var(--rb-text-md);
-    margin-top: 16px;
-  }
-  .rb-magazin-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 32px;
-  }
-</style>

@@ -36,20 +36,29 @@
   animation-timing-function: cubic-bezier(.2,.65,.3,1);
 }
 
-/* Reveal-On-Scroll Helper */
-[data-reveal] {
+/* Reveal-On-Scroll Helper
+   --------------------------------------------------------------
+   Standard: alle Inhalte sind sofort sichtbar (kein FOUC, kein
+   "Render-Vorlauf"). Erst wenn das Inline-Script in <head> die
+   Klasse `js-reveal` an <html> setzt, werden Elemente versteckt
+   und vom IntersectionObserver eingeblendet.
+
+   Begründung: ohne dieses Pattern blieb der Hero auf der Startseite
+   (und alle data-reveal-Sektionen) für ~100 ms unsichtbar, bis der
+   IntersectionObserver lief. Das wirkte wie ein zweiter Render. */
+.js-reveal [data-reveal] {
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 600ms cubic-bezier(.2,.65,.3,1), transform 600ms cubic-bezier(.2,.65,.3,1);
   will-change: opacity, transform;
 }
-[data-reveal].is-revealed {
+.js-reveal [data-reveal].is-revealed {
   opacity: 1;
   transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .js-reveal [data-reveal] { opacity: 1; transform: none; transition: none; }
   ::view-transition-old(root),
   ::view-transition-new(root) { animation: none !important; }
   *, *::before, *::after {

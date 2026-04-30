@@ -2,7 +2,6 @@
 import { getCollection, getEntry } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import ArticleCard from '@/components/ArticleCard.astro';
 import { site } from '@/lib/site';
 import { estimateReadingTime } from '@/lib/reading-time';
 
@@ -32,13 +31,32 @@ const toc =
     ? data.toc
     : headings.filter((h) => h.depth === 2).map((h) => ({ id: h.slug, label: h.text }));
 
-// Verwandte Artikel auflösen
+// Verwandte Artikel auflösen — wenn keine manuelle Liste, fallback auf
+// jüngste 3 Artikel der gleichen Kategorie (ohne den aktuellen).
+const allArticles = await getCollection('magazin', ({ data }) => !data.draft);
 let related: CollectionEntry<'magazin'>[] = [];
 if (data.related && data.related.length > 0) {
-  const all = await getCollection('magazin', ({ data }) => !data.draft);
   related = data.related
-    .map((slug) => all.find((a) => a.slug === slug))
+    .map((slug) => allArticles.find((a) => a.slug === slug))
     .filter((a): a is CollectionEntry<'magazin'> => Boolean(a));
+}
+if (related.length < 3) {
+  const sameCat = allArticles
+    .filter((a) => a.slug !== entry.slug && a.data.category === data.category)
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+  for (const a of sameCat) {
+    if (related.length >= 3) break;
+    if (!related.some((r) => r.slug === a.slug)) related.push(a);
+  }
+}
+if (related.length < 3) {
+  const others = allArticles
+    .filter((a) => a.slug !== entry.slug && !related.some((r) => r.slug === a.slug))
+    .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+  for (const a of others) {
+    if (related.length >= 3) break;
+    related.push(a);
+  }
 }
 
 // Daten formatieren
@@ -201,16 +219,29 @@ if (data.faq && data.faq.length > 0) {
       </div>
     </section>
 
-    {/* Verwandte Artikel */}
+    {/* Verwandte Artikel — Editorial-Karten 1:1 zum Design */}
     {related.length > 0 && (
-      <section class="rb-section rb-section--cream">
+      <section class="rb-mag-related">
         <div class="rb-wrap">
-          <header class="rb-magazin-header" style="margin-bottom: 32px;">
-            <span class="rb-eyebrow">Weiterlesen</span>
-            <h2>Mehr zu diesem Thema</h2>
-          </header>
-          <div class="rb-magazin-grid">
-            {related.map((entry) => <ArticleCard entry={entry} />)}
+          <div class="rb-mag-related__head">
+            <h3>Weiter im Magazin</h3>
+            <a href="/magazin/" class="rb-btn rb-btn--link">Alle Artikel →</a>
+          </div>
+          <div class="rb-mag-related__grid">
+            {related.map((rel) => (
+              <a class="rb-mag-card" href={`/magazin/${rel.slug}/`}>
+                <div class="rb-mag-card__photo" style={`background-image: url('${rel.data.heroImage}');`}>
+                  <span class="rb-mag-card__cat">{rel.data.category}</span>
+                </div>
+                <div class="rb-mag-card__body">
+                  <h4 class="rb-mag-card__title">{rel.data.title}</h4>
+                  <div class="rb-mag-card__meta">
+                    {fmtDate(rel.data.pubDate)}
+                    {rel.data.readingTime && <> · {rel.data.readingTime} Min. Lesezeit</>}
+                  </div>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       </section>
