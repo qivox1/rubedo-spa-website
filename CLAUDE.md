@@ -1,0 +1,69 @@
+# Astro-Projekt — Quick-Reference
+
+> Diese Datei ergänzt die `CLAUDE.md` im Parent-Folder mit Code-spezifischen Konventionen.
+
+## Routing
+
+- `output: 'static'`, `trailingSlash: 'always'`, `build.format: 'directory'` (siehe `astro.config.mjs`).
+- Eine Page pro Astro-Datei. Routes werden aus dem Pfad in `src/pages/` abgeleitet.
+- Magazin-Artikel sind Markdown unter `src/content/magazin/` mit YAML-Frontmatter (Schema in `src/content/config.ts`). Routing kommt automatisch über `src/pages/magazin/[...slug].astro`.
+
+## Style-Pipeline
+
+```
+src/styles/
+├─ tokens.css       Design-Tokens als CSS-Custom-Properties (Farben, Type, Spacing, Motion)
+├─ template.css     Alle .rb-* Komponenten-Klassen (Header, Footer, Sections, Buttons, …)
+└─ global.css       Eintrittspunkt: importiert tokens + template, dann @tailwind base/components/utilities
+```
+
+WICHTIG: `@import`-Statements MÜSSEN vor `@tailwind`-Direktiven stehen, sonst werden sie verworfen.
+
+## Komponenten-Konventionen
+
+- Globale Komponenten in `src/components/Site*.astro` (Topbar, Header, Footer, SchemaOrg, Analytics, ConsentBanner).
+- Layout in `src/layouts/BaseLayout.astro`. Jede Page wrappt sich darin.
+- Inhalts-Komponenten in `src/components/<Name>.astro`. Beispiel: `ArticleCard.astro`.
+- Reveal-on-Scroll: `data-reveal` Attribut auf einem Element, der IntersectionObserver in BaseLayout.astro fügt automatisch `is-revealed` hinzu.
+
+## Bilder
+
+- Alle Hero/Content-Bilder in `public/images/` (webp bevorzugt).
+- Pfade in Astro-Files immer absolut: `/images/<name>.webp`.
+- LCP-Optimierung: `heroImage`-Prop auf BaseLayout setzen — generiert automatisch `<link rel="preload">`.
+
+## Site-Konstanten
+
+`src/lib/site.ts` ist Single Source of Truth für NAP, Tracking, Social, Nav-Items, Booking-Embed-URL.
+
+## Magazin-Frontmatter (siehe `src/content/magazin/_template.md`)
+
+Pflicht: `title, description, pubDate, author, category, heroImage, heroImageAlt`.
+Optional aber empfohlen: `excerpt, updatedDate, tags, readingTime, featured, draft, toc, faq, related`.
+
+`category` ist ein kontrolliertes Vokabular (siehe `src/content/config.ts`). Neue Werte erst dort ergänzen, sonst failt der Build.
+
+`draft: true` versteckt den Artikel — vor Publikation auf `false` setzen.
+
+## Schema.org
+
+- `LocalBusiness` (HealthAndBeautyBusiness) global in `BaseLayout` via `<SchemaOrg />`.
+- `Article` + `BreadcrumbList` automatisch pro Magazin-Artikel.
+- `FAQPage` automatisch, wenn ein Artikel `faq:` im Frontmatter hat.
+
+## Build-Setup (Cloudflare Pages)
+
+- Build-Command: `npm run build`
+- Build-Output: `dist`
+- Node: `20.18.0` (env `NODE_VERSION`)
+- Sitemap: automatisch via `@astrojs/sitemap`, Output `sitemap-index.xml` + `sitemap-0.xml` in `dist/`.
+
+## Lokal entwickeln (selten nötig — meist baut CF direkt nach Push)
+
+```bash
+nvm use            # respektiert .nvmrc → 20.18.0
+npm install        # vorhandener Lockfile sollte passen
+npm run dev        # http://localhost:4321
+npm run build      # → dist/
+npm run preview    # rendered build lokal
+```
