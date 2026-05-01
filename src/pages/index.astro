@@ -61,9 +61,9 @@ const heroImage = '/images/startseite-hero-rubedo-spa-minden.webp';
                 <img src="/images/monica-portrait-startseite.webp" alt="Monica Galletti, Inhaberin Rubedo Spa Minden" width="147" height="184" loading="lazy" />
               </a>
               <figcaption class="rb-author-vignette__cap">
-                <span class="rb-author-vignette__name">Monica Galletti</span>
-                <span class="rb-author-vignette__role">Inhaberin · Rubedo Spa</span>
-                <a class="rb-author-vignette__link" href="/ueber-monica/">Über Monica</a>
+                <a class="rb-author-vignette__caplink" href="/ueber-monica/" rel="author">
+                  Monica Galletti, Inhaberin von Rubedo&nbsp;Spa
+                </a>
               </figcaption>
             </figure>
           </div>
@@ -204,3 +204,41 @@ const heroImage = '/images/startseite-hero-rubedo-spa-minden.webp';
   </article>
 
 </BaseLayout>
+
+<style>
+  .rb-author-vignette {
+    margin: 24px 0 0;
+    display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+    max-width: 240px;
+  }
+  .rb-author-vignette__media {
+    display: block;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(15,12,10,0.10);
+    transition: transform 320ms cubic-bezier(.22,.61,.36,1), box-shadow 320ms cubic-bezier(.22,.61,.36,1);
+  }
+  .rb-author-vignette__media:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(15,12,10,0.16);
+  }
+  .rb-author-vignette__media img { display: block; width: 100%; height: auto; }
+  .rb-author-vignette__cap {
+    margin: 0;
+    font-family: var(--rb-font-body);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--rb-ink-700);
+  }
+  .rb-author-vignette__caplink {
+    color: var(--rb-ink-700);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 320ms cubic-bezier(.22,.61,.36,1), border-color 320ms cubic-bezier(.22,.61,.36,1);
+  }
+  .rb-author-vignette__caplink:hover {
+    color: var(--rb-gold-700);
+    border-bottom-color: var(--rb-gold-500);
+  }
+</style>
+

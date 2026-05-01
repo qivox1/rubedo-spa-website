@@ -241,7 +241,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
     });
 
     // Beim Wechsel auf Desktop-Viewport sicher schließen
-    const mq = window.matchMedia('(min-width: 981px)');
+    const mq = window.matchMedia('(min-width: 1101px)');
     const onMq = () => { if (mq.matches) close(); };
     mq.addEventListener?.('change', onMq);
 
@@ -506,9 +506,10 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
   }
 
   /* ---- Breakpoints ----
-     980px: stimmt mit template.css überein, das die Desktop-Nav dort versteckt.
-     Vorher gab's eine Lücke 921–980px, in der weder Nav noch Burger sichtbar war. */
-  @media (max-width: 980px) {
+     1100px: Nav + CTA aus, Burger an. Mit 7 Top-Level-Items + Caret + CTA bekommen wir
+     unterhalb von ~1100px Überlappungs-Risiko mit dem CTA-Button. Lieber früher
+     auf Mobile-Drawer wechseln als die Items zu zerquetschen. */
+  @media (max-width: 1100px) {
     .rb-nav { display: none !important; }
     .rb-header__cta { display: none !important; }
     .rb-mobile-toggle { display: inline-flex; }
@@ -523,3 +524,4 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
     .rb-mnav__group.is-open .rb-mnav__sublist { max-height: none !important; }
   }
 </style>
+

@@ -40,7 +40,9 @@ a { color: inherit; }
 }
 .rb-topbar__inner {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 0; gap: var(--rb-space-5);
+  /* nur block-padding — sonst überschreibt der Shorthand das padding-inline:40px aus .rb-wrap */
+  padding-block: 10px;
+  gap: var(--rb-space-5);
 }
 .rb-topbar a { text-decoration: none; color: var(--rb-gold-300); }
 .rb-topbar a:hover { color: var(--rb-paper); }
@@ -57,8 +59,10 @@ a { color: inherit; }
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: var(--rb-space-6);
-  padding: 18px 0;
+  gap: var(--rb-space-5);
+  /* nur block-padding — sonst überschreibt der Shorthand das padding-inline:40px aus .rb-wrap */
+  padding-block: 18px;
+  min-width: 0;
 }
 .rb-brand {
   display: flex; align-items: center; gap: 14px;
@@ -3339,3 +3343,4 @@ a { color: inherit; }
   .rb-pull blockquote { font-size: 24px; }
   .rb-pull__mark { font-size: 56px; }
 }
+

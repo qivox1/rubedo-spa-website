@@ -110,10 +110,12 @@ const socials: { key: keyof typeof site.social; label: string; svg: string }[] =
   .rb-footer__socials {
     list-style: none;
     padding: 0;
-    margin: 16px 0 0 0;
+    margin: 18px 0 0 0;
     display: flex;
-    gap: 12px;
+    gap: 14px;
   }
+  /* Premium-Stil: ruhige Pille, dezenter Hover ohne Spielereien.
+     Inspiration Aesop / Loro Piana: Border + Color Shift, kein Fill, kein Wackeln. */
   .rb-footer__socials a,
   .rb-footer__socials .is-pending {
     position: relative;
@@ -123,51 +125,35 @@ const socials: { key: keyof typeof site.social; label: string; svg: string }[] =
     border: 1px solid rgba(242,232,210,0.22);
     border-radius: var(--rb-radius-pill);
     color: var(--rb-gold-100);
-    overflow: hidden;
-    isolation: isolate;
-    transition: color 320ms cubic-bezier(.2,.65,.3,1),
-                border-color 320ms cubic-bezier(.2,.65,.3,1),
-                transform 320ms cubic-bezier(.2,.65,.3,1),
-                box-shadow 320ms cubic-bezier(.2,.65,.3,1);
+    background: transparent;
+    transition: color 520ms cubic-bezier(.22,.61,.36,1),
+                border-color 520ms cubic-bezier(.22,.61,.36,1),
+                background-color 520ms cubic-bezier(.22,.61,.36,1),
+                box-shadow 520ms cubic-bezier(.22,.61,.36,1),
+                transform 520ms cubic-bezier(.22,.61,.36,1);
   }
-  /* Liquid-Fill: gold→burgundy-Gradient steigt von unten auf
-     Wirkt auch auf .is-pending, damit der Effekt schon vor dem Setzen der URLs sichtbar ist. */
-  .rb-footer__socials a::before,
-  .rb-footer__socials .is-pending::before {
-    content: "";
-    position: absolute;
-    inset: auto -2px -2px -2px;
-    height: 0;
-    background: linear-gradient(180deg, var(--rb-gold-500) 0%, var(--rb-burgundy-500) 100%);
-    transition: height 380ms cubic-bezier(.2,.65,.3,1);
-    z-index: -1;
-  }
-  /* Subtiler Glow-Ring außen */
+  /* Sehr feiner Gold-Halo statt sichtbarem Fill — bleibt bei reduced-motion auch sichtbar */
   .rb-footer__socials a::after,
   .rb-footer__socials .is-pending::after {
     content: "";
     position: absolute;
-    inset: -4px;
+    inset: -1px;
     border-radius: 999px;
-    background: radial-gradient(closest-side, rgba(183,149,87,0.35), transparent 70%);
-    opacity: 0;
-    transition: opacity 320ms cubic-bezier(.2,.65,.3,1);
-    z-index: -2;
+    box-shadow: 0 0 0 0 rgba(183,149,87,0);
+    transition: box-shadow 520ms cubic-bezier(.22,.61,.36,1);
     pointer-events: none;
   }
   .rb-footer__socials a:hover,
   .rb-footer__socials .is-pending:hover {
     color: var(--rb-paper);
-    border-color: var(--rb-gold-300);
-    transform: translateY(-3px);
-    box-shadow: 0 8px 18px rgba(15,12,10,0.45);
+    border-color: var(--rb-gold-500);
+    background: rgba(183,149,87,0.10);
+    transform: translateY(-1px);
   }
-  .rb-footer__socials a:hover::before,
-  .rb-footer__socials .is-pending:hover::before { height: calc(100% + 4px); }
   .rb-footer__socials a:hover::after,
-  .rb-footer__socials .is-pending:hover::after { opacity: 1; }
-  .rb-footer__socials a:hover svg,
-  .rb-footer__socials .is-pending:hover svg { transform: scale(1.12) rotate(-4deg); }
+  .rb-footer__socials .is-pending:hover::after {
+    box-shadow: 0 0 0 4px rgba(183,149,87,0.16);
+  }
   .rb-footer__socials a:focus-visible {
     outline: 2px solid var(--rb-gold-300);
     outline-offset: 3px;
@@ -177,9 +163,18 @@ const socials: { key: keyof typeof site.social; label: string; svg: string }[] =
     cursor: help;
   }
   .rb-footer__socials svg {
-    width: 18px; height: 18px;
+    width: 17px; height: 17px;
     fill: currentColor;
-    transition: transform 380ms cubic-bezier(.2,.65,.3,1);
-    position: relative; z-index: 1;
+    transition: opacity 520ms cubic-bezier(.22,.61,.36,1);
+    opacity: 0.92;
+  }
+  .rb-footer__socials a:hover svg,
+  .rb-footer__socials .is-pending:hover svg { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .rb-footer__socials a, .rb-footer__socials .is-pending,
+    .rb-footer__socials a::after, .rb-footer__socials .is-pending::after,
+    .rb-footer__socials svg { transition: none; }
+    .rb-footer__socials a:hover, .rb-footer__socials .is-pending:hover { transform: none; }
   }
 </style>
+
