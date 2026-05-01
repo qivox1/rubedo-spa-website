@@ -130,8 +130,10 @@ const socials: { key: keyof typeof site.social; label: string; svg: string }[] =
                 transform 320ms cubic-bezier(.2,.65,.3,1),
                 box-shadow 320ms cubic-bezier(.2,.65,.3,1);
   }
-  /* Liquid-Fill: gold→burgundy-Gradient steigt von unten auf */
-  .rb-footer__socials a::before {
+  /* Liquid-Fill: gold→burgundy-Gradient steigt von unten auf
+     Wirkt auch auf .is-pending, damit der Effekt schon vor dem Setzen der URLs sichtbar ist. */
+  .rb-footer__socials a::before,
+  .rb-footer__socials .is-pending::before {
     content: "";
     position: absolute;
     inset: auto -2px -2px -2px;
@@ -141,7 +143,8 @@ const socials: { key: keyof typeof site.social; label: string; svg: string }[] =
     z-index: -1;
   }
   /* Subtiler Glow-Ring außen */
-  .rb-footer__socials a::after {
+  .rb-footer__socials a::after,
+  .rb-footer__socials .is-pending::after {
     content: "";
     position: absolute;
     inset: -4px;
@@ -152,22 +155,26 @@ const socials: { key: keyof typeof site.social; label: string; svg: string }[] =
     z-index: -2;
     pointer-events: none;
   }
-  .rb-footer__socials a:hover {
+  .rb-footer__socials a:hover,
+  .rb-footer__socials .is-pending:hover {
     color: var(--rb-paper);
     border-color: var(--rb-gold-300);
     transform: translateY(-3px);
     box-shadow: 0 8px 18px rgba(15,12,10,0.45);
   }
-  .rb-footer__socials a:hover::before { height: calc(100% + 4px); }
-  .rb-footer__socials a:hover::after { opacity: 1; }
-  .rb-footer__socials a:hover svg { transform: scale(1.12) rotate(-4deg); }
+  .rb-footer__socials a:hover::before,
+  .rb-footer__socials .is-pending:hover::before { height: calc(100% + 4px); }
+  .rb-footer__socials a:hover::after,
+  .rb-footer__socials .is-pending:hover::after { opacity: 1; }
+  .rb-footer__socials a:hover svg,
+  .rb-footer__socials .is-pending:hover svg { transform: scale(1.12) rotate(-4deg); }
   .rb-footer__socials a:focus-visible {
     outline: 2px solid var(--rb-gold-300);
     outline-offset: 3px;
   }
   .rb-footer__socials .is-pending {
-    color: rgba(242,232,210,0.42);
-    cursor: default;
+    color: rgba(242,232,210,0.55);
+    cursor: help;
   }
   .rb-footer__socials svg {
     width: 18px; height: 18px;
