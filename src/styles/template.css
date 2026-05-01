@@ -290,6 +290,95 @@ a { color: inherit; }
 }
 
 /* ============================================================
+   MEGA-MENU (3-Spalten-Flyout für „Anwendungen")
+   Linksbündig zum Trigger, damit es nach rechts wächst und nicht
+   am linken Viewport-Rand übersteht. Zentrierung würde bei einem
+   Trigger weit links zu Overflow führen.
+   ============================================================ */
+.rb-nav__flyout--mega {
+  min-width: 760px;
+  max-width: 880px;
+  padding: 28px 28px 24px;
+  left: 0;
+  transform: translate(0, 8px);
+}
+.rb-nav__group:hover .rb-nav__flyout--mega,
+.rb-nav__group:focus-within .rb-nav__flyout--mega,
+.rb-nav__group.is-open .rb-nav__flyout--mega {
+  transform: translate(0, 0);
+}
+.rb-nav__mega-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.rb-nav__mega-col {
+  display: flex; flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.rb-nav__mega-head {
+  display: block;
+  text-decoration: none;
+  padding: 6px 0 10px;
+  border-bottom: 1px solid var(--rb-ink-100);
+  margin-bottom: 6px;
+  transition: border-color 220ms cubic-bezier(.2,.65,.3,1);
+}
+.rb-nav__mega-head:hover { border-bottom-color: var(--rb-gold-500); }
+.rb-nav__mega-title {
+  display: block;
+  font-family: var(--rb-font-display);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  line-height: 1.2;
+  color: var(--rb-gold-700);
+  text-transform: none;
+}
+.rb-nav__mega-desc {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--rb-font-body);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--rb-ink-500);
+}
+.rb-nav__mega-items {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex; flex-direction: column;
+  gap: 2px;
+}
+.rb-nav__mega-items a {
+  display: block;
+  padding: 7px 10px;
+  margin-left: -10px;
+  font-family: var(--rb-font-body);
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--rb-ink-700);
+  text-decoration: none;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
+  transition: background 220ms cubic-bezier(.2,.65,.3,1),
+              color 220ms cubic-bezier(.2,.65,.3,1),
+              border-color 220ms cubic-bezier(.2,.65,.3,1);
+}
+.rb-nav__mega-items a:hover,
+.rb-nav__mega-items a:focus-visible {
+  background: var(--rb-cream);
+  color: var(--rb-ink-900);
+  border-left-color: var(--rb-gold-500);
+  outline: none;
+}
+@media (max-width: 1080px) {
+  .rb-nav__flyout--mega { min-width: 640px; }
+  .rb-nav__mega-grid { gap: 18px; }
+}
+
+/* ============================================================
    HERO
    ============================================================ */
 .rb-block-hero {

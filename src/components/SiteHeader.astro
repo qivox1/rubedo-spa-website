@@ -12,9 +12,19 @@ function isActive(href: string): boolean {
   return currentPath.startsWith(href);
 }
 
-// Nav-Items mit optionalen children flachklopfen für Astro-Templates
+// Nav-Items mit optionalen children/groups flachklopfen für Astro-Templates
 type NavLink = { label: string; href: string };
-type NavGroup = NavLink & { children?: ReadonlyArray<NavLink & { description?: string }> };
+type NavChild = NavLink & { description?: string };
+type NavMegaGroup = {
+  heading: string;
+  headingHref: string;
+  headingDesc?: string;
+  items?: ReadonlyArray<NavChild>;
+};
+type NavGroup = NavLink & {
+  children?: ReadonlyArray<NavChild>;
+  groups?: ReadonlyArray<NavMegaGroup>;
+};
 const navItems = site.nav as ReadonlyArray<NavGroup>;
 ---
 
@@ -34,17 +44,19 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
 
     <nav class="rb-nav" aria-label="Hauptnavigation">
       {navItems.map((item, idx) => {
+        const hasGroups = !!item.groups && item.groups.length > 0;
         const hasChildren = !!item.children && item.children.length > 0;
+        const hasFlyout = hasGroups || hasChildren;
         const active = isActive(item.href);
-        const linkClasses = `rb-nav__item${active ? ' is-active' : ''}${hasChildren ? ' rb-nav__item--has-sub' : ''}`;
-        if (!hasChildren) {
+        const linkClasses = `rb-nav__item${active ? ' is-active' : ''}${hasFlyout ? ' rb-nav__item--has-sub' : ''}`;
+        if (!hasFlyout) {
           return (
             <a class={linkClasses} href={item.href} aria-current={active ? 'page' : undefined}>{item.label}</a>
           );
         }
         const flyoutId = `nav-flyout-${idx}`;
         return (
-          <div class="rb-nav__group" data-nav-group>
+          <div class={`rb-nav__group${hasGroups ? ' rb-nav__group--mega' : ''}`} data-nav-group>
             <a
               class={linkClasses}
               href={item.href}
@@ -56,18 +68,40 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
             >
               {item.label}
             </a>
-            <div class="rb-nav__flyout" id={flyoutId} role="menu" aria-label={`${item.label} — Untermenü`}>
-              <a class="rb-nav__flyout-link rb-nav__flyout-link--lead" href={item.href} role="menuitem">
-                <span class="rb-nav__flyout-head">{item.label} · Übersicht</span>
-                <span class="rb-nav__flyout-desc">Zur Hauptseite</span>
-              </a>
-              {item.children!.map((child) => (
-                <a class="rb-nav__flyout-link" href={child.href} role="menuitem">
-                  <span class="rb-nav__flyout-head">{child.label}</span>
-                  {child.description && <span class="rb-nav__flyout-desc">{child.description}</span>}
+            {hasGroups ? (
+              <div class="rb-nav__flyout rb-nav__flyout--mega" id={flyoutId} role="menu" aria-label={`${item.label} — Untermenü`}>
+                <div class="rb-nav__mega-grid">
+                  {item.groups!.map((g) => (
+                    <div class="rb-nav__mega-col">
+                      <a class="rb-nav__mega-head" href={g.headingHref} role="menuitem">
+                        <span class="rb-nav__mega-title">{g.heading}</span>
+                        {g.headingDesc && <span class="rb-nav__mega-desc">{g.headingDesc}</span>}
+                      </a>
+                      {g.items && g.items.length > 0 && (
+                        <ul class="rb-nav__mega-items" role="none">
+                          {g.items.map((it) => (
+                            <li role="none"><a href={it.href} role="menuitem">{it.label}</a></li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div class="rb-nav__flyout" id={flyoutId} role="menu" aria-label={`${item.label} — Untermenü`}>
+                <a class="rb-nav__flyout-link rb-nav__flyout-link--lead" href={item.href} role="menuitem">
+                  <span class="rb-nav__flyout-head">{item.label} · Übersicht</span>
+                  <span class="rb-nav__flyout-desc">Zur Hauptseite</span>
                 </a>
-              ))}
-            </div>
+                {item.children!.map((child) => (
+                  <a class="rb-nav__flyout-link" href={child.href} role="menuitem">
+                    <span class="rb-nav__flyout-head">{child.label}</span>
+                    {child.description && <span class="rb-nav__flyout-desc">{child.description}</span>}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         );
       })}
@@ -117,9 +151,11 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
 
     <nav class="rb-mnav__list" aria-label="Mobile Hauptnavigation">
       {navItems.map((item, idx) => {
+        const hasGroups = !!item.groups && item.groups.length > 0;
         const hasChildren = !!item.children && item.children.length > 0;
+        const hasFlyout = hasGroups || hasChildren;
         const active = isActive(item.href);
-        if (!hasChildren) {
+        if (!hasFlyout) {
           return (
             <a class={`rb-mnav__link${active ? ' is-active' : ''}`} href={item.href} data-mobile-close-link>
               <span>{item.label}</span>
@@ -131,7 +167,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
         }
         const groupId = `mnav-grp-${idx}`;
         return (
-          <div class={`rb-mnav__group${active ? ' is-active' : ''}${active ? ' is-open' : ''}`}>
+          <div class={`rb-mnav__group${active ? ' is-active is-open' : ''}`}>
             <button
               class="rb-mnav__summary"
               type="button"
@@ -146,16 +182,34 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
             </button>
             <div class="rb-mnav__sublist" id={groupId} role="region" aria-label={`${item.label} — Untermenü`}>
               <div class="rb-mnav__sublist-inner">
-                <a class="rb-mnav__sublink rb-mnav__sublink--lead" href={item.href} data-mobile-close-link>
-                  <span class="rb-mnav__subhead">{item.label} · Übersicht</span>
-                  <span class="rb-mnav__subtext">Zur Hauptseite</span>
-                </a>
-                {item.children!.map((child) => (
-                  <a class="rb-mnav__sublink" href={child.href} data-mobile-close-link>
-                    <span class="rb-mnav__subhead">{child.label}</span>
-                    {child.description && <span class="rb-mnav__subtext">{child.description}</span>}
-                  </a>
-                ))}
+                {hasGroups ? (
+                  item.groups!.map((g) => (
+                    <div class="rb-mnav__megasection">
+                      <a class="rb-mnav__sublink rb-mnav__sublink--lead" href={g.headingHref} data-mobile-close-link>
+                        <span class="rb-mnav__subhead">{g.heading}</span>
+                        {g.headingDesc && <span class="rb-mnav__subtext">{g.headingDesc}</span>}
+                      </a>
+                      {g.items && g.items.length > 0 && g.items.map((it) => (
+                        <a class="rb-mnav__sublink rb-mnav__sublink--nested" href={it.href} data-mobile-close-link>
+                          <span class="rb-mnav__subhead">{it.label}</span>
+                        </a>
+                      ))}
+                    </div>
+                  ))
+                ) : (
+                  <>
+                    <a class="rb-mnav__sublink rb-mnav__sublink--lead" href={item.href} data-mobile-close-link>
+                      <span class="rb-mnav__subhead">{item.label} · Übersicht</span>
+                      <span class="rb-mnav__subtext">Zur Hauptseite</span>
+                    </a>
+                    {item.children!.map((child) => (
+                      <a class="rb-mnav__sublink" href={child.href} data-mobile-close-link>
+                        <span class="rb-mnav__subhead">{child.label}</span>
+                        {child.description && <span class="rb-mnav__subtext">{child.description}</span>}
+                      </a>
+                    ))}
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -241,7 +295,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
     });
 
     // Beim Wechsel auf Desktop-Viewport sicher schließen
-    const mq = window.matchMedia('(min-width: 1101px)');
+    const mq = window.matchMedia('(min-width: 981px)');
     const onMq = () => { if (mq.matches) close(); };
     mq.addEventListener?.('change', onMq);
 
@@ -467,6 +521,22 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
   }
   .rb-mnav__sublink--lead .rb-mnav__subhead { color: var(--rb-gold-700); }
 
+  /* Mega-Sektionen im Mobile-Drawer (für Item „Anwendungen") —
+     visuelle Trennung pro Säule mit Border-Top */
+  .rb-mnav__megasection {
+    border-top: 1px solid var(--rb-ink-100);
+    padding-top: 4px;
+  }
+  .rb-mnav__megasection:first-child { border-top: 0; padding-top: 0; }
+  .rb-mnav__sublink--nested {
+    padding-left: 56px;
+    padding-top: 10px; padding-bottom: 10px;
+  }
+  .rb-mnav__sublink--nested .rb-mnav__subhead {
+    font-weight: 400;
+    color: var(--rb-ink-700);
+  }
+
   /* ---- CTA + Kontakt ---- */
   .rb-mnav__cta {
     display: flex; flex-direction: column;
@@ -506,10 +576,9 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
   }
 
   /* ---- Breakpoints ----
-     1100px: Nav + CTA aus, Burger an. Mit 7 Top-Level-Items + Caret + CTA bekommen wir
-     unterhalb von ~1100px Überlappungs-Risiko mit dem CTA-Button. Lieber früher
-     auf Mobile-Drawer wechseln als die Items zu zerquetschen. */
-  @media (max-width: 1100px) {
+     980px: mit konsolidierten 5 Top-Level-Items reicht wieder ein generöser Spacing
+     auf Tablet-Größen. Darunter wechseln wir in den Mobile-Drawer. */
+  @media (max-width: 980px) {
     .rb-nav { display: none !important; }
     .rb-header__cta { display: none !important; }
     .rb-mobile-toggle { display: inline-flex; }

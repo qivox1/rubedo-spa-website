@@ -63,9 +63,10 @@ export const site = {
     embedUrl: '', // z.B. https://calendar.google.com/calendar/appointments/schedules/...
   },
 
-  // Hauptnavigation — `children` optional für Untermenüs (zweite Ebene).
-  // Konvention: in `children` NUR Einträge, deren URL sich vom Parent unterscheidet.
-  // Der Lead-Link „· Übersicht" auf den Parent wird vom Header automatisch ergänzt.
+  // Hauptnavigation — Top-Level reduziert auf 5 Items für mehr Premium-Spacing.
+  // Drei Säulen sind unter "Anwendungen" zu einem Mega-Menu mit `groups` konsolidiert.
+  // Konvention `children`: nur Einträge, deren URL sich vom Parent unterscheidet.
+  // Konvention `groups`: pro Säule eine Spalte mit headingHref (Hub-Link) + items.
   nav: [
     {
       label: 'Philosophie',
@@ -74,23 +75,36 @@ export const site = {
         { label: 'Longevity-Studio Minden', href: '/longevity-studio-minden/', description: 'Studio, Mission, Werte und Standort in der Marienstraße.' },
       ],
     },
-    { label: 'DNA Skin', href: '/dna-skin-intelligence/' },
     {
-      label: 'Kryo Vital',
-      href: '/kryo-vital/',
-      children: [
-        { label: 'Ganzkörper-Kryotherapie', href: '/kryo-vital/ganzkoerper/', description: 'Drei Minuten in der Kryo-Suite bei minus 110 °C.' },
-        { label: 'Körperformung · Druckwellen', href: '/kryo-vital/koerperformung/', description: 'Rhythmische Druckwellen-Anwendung für Beine, Bauch und Arme.' },
-        { label: 'Body Slimming Wrap', href: '/kryo-vital/koerperformung/wrap/', description: 'Wickel-Anwendung mit pflegenden Wirkstoffen — drei Linien.' },
-        { label: 'Body Slimming Bandage', href: '/kryo-vital/koerperformung/bandage/', description: 'Wirkstoff-Bandagen für leichtere Beine — fünf Linien.' },
-      ],
-    },
-    {
-      label: 'Inner Source',
-      href: '/inner-source/',
-      children: [
-        { label: 'Rubedo Suite (Massagen)', href: '/inner-source/rubedo-suite/', description: 'Abhyanga, Hot Stone, Hot Bambu, Balinesisch.' },
-        { label: 'Atem-Ritual', href: '/inner-source/atem-ritual/', description: 'Geführte 60-Minuten-Sitzung — neurosomatische Atemarbeit.' },
+      label: 'Anwendungen',
+      href: '/philosophie/',
+      groups: [
+        {
+          heading: 'DNA Skin Intelligence',
+          headingHref: '/dna-skin-intelligence/',
+          headingDesc: 'Personalisierte Hautpflege auf Basis von 20 Beauty-Genen.',
+          items: [],
+        },
+        {
+          heading: 'Kryo Vital',
+          headingHref: '/kryo-vital/',
+          headingDesc: 'Drei Minuten kontrollierter Kältereiz für Vitalität.',
+          items: [
+            { label: 'Ganzkörper-Kryotherapie', href: '/kryo-vital/ganzkoerper/' },
+            { label: 'Körperformung · Druckwellen', href: '/kryo-vital/koerperformung/' },
+            { label: 'Body Slimming Wrap', href: '/kryo-vital/koerperformung/wrap/' },
+            { label: 'Body Slimming Bandage', href: '/kryo-vital/koerperformung/bandage/' },
+          ],
+        },
+        {
+          heading: 'Inner Source Rituals',
+          headingHref: '/inner-source/',
+          headingDesc: 'Atem, Berührung und Stille als Tiefenarbeit.',
+          items: [
+            { label: 'Rubedo Suite (Massagen)', href: '/inner-source/rubedo-suite/' },
+            { label: 'Atem-Ritual', href: '/inner-source/atem-ritual/' },
+          ],
+        },
       ],
     },
     { label: 'Monica', href: '/ueber-monica/' },
@@ -109,3 +123,4 @@ export const site = {
 export type Site = typeof site;
 export type NavItem = (typeof site.nav)[number];
 export type NavChild = NavItem extends { children: infer C } ? (C extends readonly (infer X)[] ? X : never) : never;
+
