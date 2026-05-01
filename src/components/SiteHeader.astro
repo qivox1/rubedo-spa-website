@@ -23,7 +23,8 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
     <a class="rb-brand rb-brand--logo" href="/" aria-label={`${site.name} — Startseite`}>
       <img
         class="rb-brand__logo"
-        src="/logo-rubedo-spa.webp"
+        src="/logo-rubedo-spa-64.webp"
+        srcset="/logo-rubedo-spa-64.webp 1x, /logo-rubedo-spa-128.webp 2x"
         alt={site.name}
         width="64"
         height="64"
@@ -72,7 +73,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
   <aside class="rb-mnav__panel" role="dialog" aria-modal="true" aria-label="Hauptnavigation">
     <header class="rb-mnav__head">
       <a class="rb-mnav__brand" href="/" data-mobile-close-link>
-        <img src="/logo-rubedo-spa.webp" alt={site.name} width="48" height="48" loading="lazy" />
+        <img src="/logo-rubedo-spa-64.webp" srcset="/logo-rubedo-spa-64.webp 1x, /logo-rubedo-spa-128.webp 2x" alt={site.name} width="48" height="48" loading="lazy" />
         <span>
           <strong>Rubedo Spa</strong>
           <em>Smart Beauty · Minden</em>
@@ -143,7 +144,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
           <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
         </svg>
         <span>
-          <em>Direkt anrufen</em>
+          <em aria-hidden="true">Direkt anrufen</em>
           <strong>{site.contact.phoneDisplay}</strong>
         </span>
       </a>
@@ -153,7 +154,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
           <polyline points="22,6 12,13 2,6"/>
         </svg>
         <span>
-          <em>E-Mail schreiben</em>
+          <em aria-hidden="true">E-Mail schreiben</em>
           <strong>{site.contact.email}</strong>
         </span>
       </a>

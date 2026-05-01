@@ -75,6 +75,9 @@ const fmtDate = (d: Date) =>
 
     <section class="rb-section rb-section--paper rb-magov-index">
       <div class="rb-wrap">
+        <div class="rb-magov-index__head">
+          <h2 class="rb-eyebrow">Aktuelle Beiträge in „{category}"</h2>
+        </div>
         <div class="rb-magov-grid">
           {sorted.map((entry, i) => {
             const cls = catClass(entry.data.category);

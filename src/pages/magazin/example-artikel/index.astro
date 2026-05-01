@@ -1,27 +1,28 @@
 ---
 /**
- * Diese Beispiel-Page wurde durch die Content-Collection abgelöst
- * (siehe src/content/magazin/wellness-minden-technologie.md).
+ * Stub für /magazin/example-artikel/ — alte WordPress-URL.
+ * Cloudflare _redirects sollte diese URL bereits abfangen und
+ * 301 → /magazin/wellness-minden-technologie/ liefern. Diese Datei
+ * dient nur als Sicherheitsnetz, falls _redirects ausfällt.
  *
- * Bitte diese Datei und den umgebenden example-artikel/-Ordner
- * lokal löschen — die Sandbox erlaubt mir das hier nicht. Im Repo
- * ist sie ab Punkt §X im HANDOFF.md aufgeführt.
- *
- * Die Astro-Seite wird vorübergehend als Redirect bereitgestellt,
- * damit Direkt-Links auf /magazin/example-artikel/ nicht ins Leere
- * laufen, falls der Ordner versehentlich nicht gelöscht wurde.
+ * Eindeutiger Title + canonical auf Zielartikel + noindex/nofollow
+ * verhindert, dass die Audit/Suchmaschine diese Seite als Duplikat
+ * der Content-Collection-Seite indexiert.
  */
+const target = '/magazin/wellness-minden-technologie/';
+const canonical = 'https://rubedo-spa-website.pages.dev' + target;
 ---
 <!doctype html>
 <html lang="de">
   <head>
     <meta charset="utf-8" />
-    <title>Weiterleitung …</title>
-    <meta http-equiv="refresh" content="0; url=/magazin/wellness-minden-technologie/" />
-    <link rel="canonical" href="https://rubedo-spa.de/magazin/wellness-minden-technologie/" />
+    <title>Weiterleitung — Rubedo Spa</title>
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <link rel="canonical" href={canonical} />
     <meta name="robots" content="noindex,nofollow" />
+    <meta name="description" content="Diese Adresse wurde verschoben. Sie werden automatisch zum aktuellen Beitrag im Rubedo-Spa-Magazin weitergeleitet." />
   </head>
   <body>
-    <p>Weiterleitung zu <a href="/magazin/wellness-minden-technologie/">/magazin/wellness-minden-technologie/</a> …</p>
+    <p>Weiterleitung zu <a href={target}>{target}</a> …</p>
   </body>
 </html>

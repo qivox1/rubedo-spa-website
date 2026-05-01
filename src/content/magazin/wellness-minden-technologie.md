@@ -1,5 +1,5 @@
 ---
-title: "Wellness in Minden: Warum moderne Technologien den Unterschied machen"
+title: "Wellness in Minden: Warum Technologien den Unterschied machen"
 description: "Wie moderne Technologien das Wohlbefinden objektivieren — und welche Methoden im Rubedo Spa Minden zum Einsatz kommen. Von Kryo bis Druckwellen."
 excerpt: "Sauna, Massage, Entspannung — Wellness ist heute mehr. Welche Technologien wirklich einen Unterschied machen, und wie sie sich kombinieren lassen."
 pubDate: 2026-02-05
@@ -52,8 +52,10 @@ Wellness ist heute weit mehr als Sauna, Massage und Entspannung. Bei Rubedo Spa 
 
 Die Wellness-Branche entwickelt sich rasant weiter, und moderne Technologien verändern, wie wir Gesundheit, Regeneration und Wohlbefinden unterstützen. Genau hier setzen moderne Wellness-Technologien an. In diesem Beitrag erfahren Sie, warum technologiegestütztes Wellness den Unterschied macht — und wie Rubedo Spa Sie mit individuellen Konzepten auf Ihrer Wellness-Reise begleitet.
 
-![Behandlungsraum der Rubedo Suite mit Hot-Stone-Detail](/images/rubedo-suite-hot-stone.webp)
-*Die Rubedo Suite — Studio in Minden, in dem klassische Rituale und moderne Technologien zusammenkommen.*
+<figure>
+  <img src="/images/rubedo-suite-hot-stone.webp" alt="Behandlungsraum der Rubedo Suite mit Hot-Stone-Detail" width="1200" height="800" loading="lazy" />
+  <figcaption><em>Die Rubedo Suite — Studio in Minden, in dem klassische Rituale und moderne Technologien zusammenkommen.</em></figcaption>
+</figure>
 
 ## Was ist modernes Wellness? Die Zukunft des Wohlbefindens {#modern}
 

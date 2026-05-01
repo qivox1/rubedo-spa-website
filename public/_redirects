@@ -22,12 +22,10 @@
 /wohlfuehl-wissen/                             /magazin/                                              301
 /wohlfuehl-wissen/*                            /magazin/:splat                                        301
 
-# Alias /about/ → /ueber-monica/ — hilft Squirrel-About-Heuristik und
-# internationalen Besuchern, die "/about" raten.
-/about                                         /ueber-monica/                                         301
-/about/                                        /ueber-monica/                                         301
-/about-us                                      /ueber-monica/                                         301
-/about-us/                                     /ueber-monica/                                         301
+# /about/ ist eine eigenständige Seite (siehe src/pages/about/index.astro).
+# Andere Aliase leiten dorthin weiter.
+/about-us                                      /about/                                                 301
+/about-us/                                     /about/                                                 301
 /ueber-uns                                     /ueber-monica/                                         301
 /ueber-uns/                                    /ueber-monica/                                         301
 

@@ -1,0 +1,125 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { site } from '@/lib/site';
+
+// /about/ ist die englische Konvention. Inhaltlich verweist sie auf
+// /ueber-monica/, hat aber eigene Substanz, damit Squirrel-Audit-Heuristik
+// und internationale Besucher hier eine echte „About"-Seite sehen.
+const title = 'About Rubedo Spa — Studio in Minden';
+const description = 'About Rubedo Spa Minden — Longevity-Studio von Monica Galletti, CIDESCO Beauty Therapist und DNA-Skin-Expertin. Drei Säulen, ein System, ein Studio in Minden.';
+const url = `${site.url}/about/`;
+
+const aboutPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': `${url}#aboutpage`,
+  url,
+  name: title,
+  description,
+  inLanguage: 'de-DE',
+  isPartOf: { '@type': 'WebSite', '@id': `${site.url}/#website`, url: site.url, name: site.name },
+  mainEntity: { '@id': `${site.url}/#localbusiness` },
+  primaryImageOfPage: { '@type': 'ImageObject', url: `${site.url}/images/monica-portrait.webp` },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'About', item: url },
+    ],
+  },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  schemaExtras={[aboutPageSchema]}
+>
+
+  <article class="rb-page" data-page="about">
+
+    <section class="rb-block-hero rb-block-hero--centered">
+      <div class="rb-wrap rb-block-hero__inner">
+        <div>
+          <span class="rb-block-hero__eyebrow">About · Rubedo Spa</span>
+          <h1>Über Rubedo Spa.</h1>
+          <p class="rb-block-hero__subline" style="margin-left:auto;margin-right:auto;">
+            Ein Longevity-Studio in Minden. Drei Säulen, eine Haltung — geführt von
+            Monica Galletti.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="rb-section rb-section--paper">
+      <div class="rb-wrap rb-wrap--narrow rb-prose">
+        <span class="rb-eyebrow">Wer wir sind</span>
+        <h2>Studio &amp; Mensch.</h2>
+        <p>
+          Rubedo Spa ist kein klassisches Spa, sondern ein <strong>Longevity-Studio</strong> in
+          Minden. Wir verbinden personalisierte Hautpflege auf DNA-Basis, kontrollierte
+          Kälteanwendungen und neurosomatische Atemarbeit zu einem System, das auf den
+          einzelnen Menschen zugeschnitten ist.
+        </p>
+        <p>
+          Das Studio wird von <a href="/ueber-monica/" rel="author">Monica Galletti</a>
+          geführt — CIDESCO Beauty Therapist, DNA Skin Expert (Beauty ID Switzerland),
+          NLP Master und seit über zehn Jahren in der internationalen 5-Sterne-Spa-Praxis tätig.
+          Unsere Arbeit basiert auf zertifizierter Ausbildung, sorgfältiger Recherche und
+          jahrelanger Erfahrung mit Klientinnen und Klienten, die ihre Schönheit und Pflege
+          ernst nehmen.
+        </p>
+
+        <h3>Mission</h3>
+        <p>
+          Wir machen sichtbare und spürbare Pflege zugänglich — ohne Heilversprechen,
+          ohne Verkaufsdruck. „Smart Beauty for Conscious Humans" beschreibt unsere
+          Haltung: präzise, persönlich, präsent.
+        </p>
+
+        <h3>Werte</h3>
+        <ul>
+          <li><strong>Personalisierung statt Standardisierung</strong> — jeder Mensch ist einzigartig.</li>
+          <li><strong>Wissenschaft trifft Ritual</strong> — moderne Skin Science und klassische Tradition.</li>
+          <li><strong>Klare Sprache</strong> — wir machen keine Heilversprechen.</li>
+          <li><strong>Beständigkeit</strong> — wir bauen Beziehungen, keine Saison-Verkäufe.</li>
+        </ul>
+
+        <h3>Standort</h3>
+        <p>
+          Rubedo Spa, Marienstraße 58, 32427 Minden — Mo bis Fr von 09:00 bis 19:00 Uhr.
+          Erreichbar unter <a href={`tel:${site.contact.phoneE164}`}>{site.contact.phoneDisplay}</a>
+          oder <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a>.
+          Anfahrt und Parkmöglichkeiten beschreiben wir auf der
+          <a href="/kontakt/">Kontakt-Seite</a>.
+        </p>
+
+        <h3>Mehr erfahren</h3>
+        <p>
+          Eine ausführliche Vita von Monica Galletti — Werdegang, Zertifizierungen,
+          Methodik — finden Sie auf der Seite <a href="/ueber-monica/" rel="author">Über
+          Monica</a>. Die Philosophie des Studios beschreibt die <a href="/philosophie/">Philosophie-Seite</a>.
+          Konkrete Anwendungen finden Sie in den drei Säulen:
+          <a href="/dna-skin-intelligence/">DNA Skin Intelligence</a>,
+          <a href="/kryo-vital/">Kryo Vital</a> und
+          <a href="/inner-source/">Inner Source</a>.
+        </p>
+      </div>
+    </section>
+
+    <section class="rb-block-cta">
+      <div class="rb-wrap">
+        <div class="rb-cta-band">
+          <div class="rb-cta-band__body">
+            <span class="rb-eyebrow">Kennenlernen</span>
+            <h3>15 Minuten Videocall — kostenfrei.</h3>
+            <p>Wir besprechen, was Sie suchen, und Monica erklärt, welche Säule für Sie passt.</p>
+          </div>
+          <div class="rb-cta-band__action"><a class="rb-btn--ghost-light" href="/termin-buchen/">Erstgespräch buchen →</a></div>
+        </div>
+      </div>
+    </section>
+
+  </article>
+
+</BaseLayout>

@@ -4,7 +4,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
 const title = 'Magazin — Notizen aus dem Studio';
 const description =
-  'Notizen aus dem Studio. Über die Technologie hinter sichtbarer Wirkung, die Rituale dahinter, und die Frage, wie sich Schönheit anfühlt, wenn man sie ernst nimmt.';
+  'Notizen aus dem Studio: Texte über Technologie, Rituale und die Frage, wie sich Schönheit anfühlt, wenn man sie ernst nimmt — von Monica Galletti.';
 
 // Alle Artikel laden, Drafts ausschließen, sortiert nach Datum (neueste zuerst)
 const all = await getCollection('magazin', ({ data }) => !data.draft);
@@ -114,8 +114,9 @@ const isLgRight = (i: number) => i === 6;
       <section class="rb-section rb-section--paper rb-magov-featured">
         <div class="rb-wrap">
           <div class="rb-magov-featured__grid">
-            <a class="rb-magov-featured__media" href={`/magazin/${featured.slug}/`} aria-label={`${featured.data.title} — zum Artikel`}>
+            <a class="rb-magov-featured__media" href={`/magazin/${featured.slug}/`}>
               <span class="rb-magov-featured__badge">Editor's Pick</span>
+              <span class="rb-sr-only">{featured.data.title} — zum Artikel</span>
               <img src={featured.data.heroImage} alt={featured.data.heroImageAlt} width="1200" height="800" loading="eager" fetchpriority="high" />
             </a>
             <div class="rb-magov-featured__body">
@@ -180,8 +181,8 @@ const isLgRight = (i: number) => i === 6;
             <h2 class="rb-section-head__title">Im Atelier notiert</h2>
           </div>
           <div class="rb-magov-index__sort">
-            <span class="rb-magov-index__sort-label">Sortieren</span>
-            <select class="rb-magov-index__select" aria-label="Sortierung" id="rb-magov-sort">
+            <label class="rb-magov-index__sort-label" for="rb-magov-sort">Sortierung</label>
+            <select class="rb-magov-index__select" id="rb-magov-sort">
               <option value="newest">Neueste zuerst</option>
               <option value="longest">Längste Lesezeit</option>
             </select>
@@ -281,11 +282,20 @@ const isLgRight = (i: number) => i === 6;
               <li>Jederzeit kündbar — ein Klick</li>
             </ul>
           </div>
-          <form class="rb-magov-letter__form" action="/kontakt/" method="get" novalidate>
+          <form class="rb-magov-letter__form" action="/api/newsletter" method="post" novalidate>
             <label class="rb-magov-letter__label" for="rb-mag-name">Wie dürfen wir Sie nennen?</label>
             <input class="rb-magov-letter__input" id="rb-mag-name" name="name" type="text" placeholder="Vorname" autocomplete="given-name" />
             <label class="rb-magov-letter__label" for="rb-mag-mail">E-Mail-Adresse</label>
             <input class="rb-magov-letter__input" id="rb-mag-mail" name="email" type="email" placeholder="ihre@adresse.de" autocomplete="email" required />
+
+            {/* Cloudflare Turnstile — Spam-Schutz, lädt nach Klaro-Consent. */}
+            <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY"></div>
+
+            <label class="rb-magov-letter__consent">
+              <input type="checkbox" name="dsgvo" required />
+              <span>Ich stimme der <a href="/datenschutz/">Datenschutzerklärung</a> zu.</span>
+            </label>
+
             <button class="rb-btn rb-btn--primary rb-magov-letter__submit" type="submit">Atelier-Brief abonnieren</button>
             <p class="rb-magov-letter__note">Ihre Daten bleiben bei uns. Datenschutz nach DSGVO. Abmeldung mit einem Klick in jeder Mail.</p>
           </form>

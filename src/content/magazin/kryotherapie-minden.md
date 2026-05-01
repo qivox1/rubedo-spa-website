@@ -1,5 +1,5 @@
 ---
-title: "Die Revolution der Kältetherapie: Ganzkörper-Kryotherapie in Minden"
+title: "Ganzkörper-Kryotherapie in Minden — drei Minuten Kälte"
 description: "Drei Minuten bei minus 110 °C — wie Ganzkörper-Kryotherapie wirkt, was sie kann (und was nicht), und wie sich der Frischekick im Rubedo Spa anfühlt."
 excerpt: "Drei Minuten Kälte als Reiz für Regeneration. Was Ganzkörper-Kryotherapie wirklich kann — und wie sich die Anwendung anfühlt."
 pubDate: 2026-03-12
