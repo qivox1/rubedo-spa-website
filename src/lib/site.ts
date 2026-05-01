@@ -112,7 +112,7 @@ export const site = {
       label: 'Magazin',
       href: '/magazin/',
       children: [
-        { label: 'Wellness & Spa', href: '/magazin/kategorie/wellness-und-spa/', description: 'Beiträge rund um bewussten Wellness-Alltag.' },
+        { label: 'Longevity', href: '/magazin/kategorie/longevity/', description: 'Brand-übergreifende Positionierung & Wellness-Stil.' },
         { label: 'Kryotherapie', href: '/magazin/kategorie/kryotherapie/', description: 'Hintergrund-Beiträge zu Kälteanwendungen.' },
       ],
     },
