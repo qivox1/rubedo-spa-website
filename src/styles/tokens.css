@@ -59,6 +59,17 @@
   --rb-paper:     #FFFFFF;   /* card surfaces */
   --rb-cream:     #FBF8F1;   /* soft warm white — preferred page bg */
 
+  /* ---------- Color: Rubedo Red (Wortmarke + Mikro-Akzente) ----------
+     Sampled from the brand wordmark "RUBEDO / SPA" in the new emblem logo.
+     Used VERY sparingly — never as fill, only as a mark / micro-accent.
+     Strict 60/25/10/4/1 application ratio (see design concept doc). */
+  --rb-red-900:  #4A0606;   /* deepest — focus rings */
+  --rb-red-700:  #6B0808;   /* hover for red accents */
+  --rb-red-500:  #8C0B0B;   /* SIGNATURE — wordmark red, micro-diamonds */
+  --rb-red-300:  #C25A5A;   /* tints */
+  --rb-red-100:  #ECC8C8;   /* soft surfaces (rare) */
+  --rb-red-50:   #F8EDED;   /* page-section tint (very rare) */
+
   /* ---------- Color: Brand · Burgundy (Rubedo / Rotwerdung) ---------- */
   --rb-burgundy-900: #4A1418;   /* deepest — letzte Schatten, Print-Akzent */
   --rb-burgundy-700: #6B2027;   /* primary brand burgundy — Captions, Akzent-Headings */
