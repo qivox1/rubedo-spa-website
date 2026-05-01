@@ -2562,30 +2562,25 @@ a { color: inherit; }
   opacity: 1;
   z-index: 2;
 }
-.rb-step-theatre__stage::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(15,12,10,0) 55%,
-    rgba(15,12,10,0.18) 100%
-  );
-  z-index: 3;
-  pointer-events: none;
-}
 .rb-step-theatre__caption {
   position: absolute;
   left: var(--rb-space-6);
-  bottom: var(--rb-space-5);
+  bottom: var(--rb-space-6);
   z-index: 4;
-  color: var(--rb-paper);
+  max-width: 62%;
+  padding: var(--rb-space-4) var(--rb-space-5);
+  background: rgba(251, 248, 241, 0.94);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-left: 3px solid var(--rb-burgundy-700);
+  border-radius: var(--rb-radius-sm);
+  box-shadow: 0 8px 24px rgba(15, 12, 10, 0.12);
+  color: var(--rb-burgundy-700);
   font-family: var(--rb-font-display);
   font-weight: 400;
-  font-size: clamp(20px, 2.4vw, 32px);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  max-width: 60%;
-  text-shadow: 0 2px 16px rgba(15,12,10,0.4);
+  font-size: clamp(18px, 2.1vw, 28px);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity var(--rb-dur-2) var(--rb-ease),
@@ -2602,7 +2597,7 @@ a { color: inherit; }
   font-weight: 500;
   letter-spacing: var(--rb-tracking-widest);
   text-transform: uppercase;
-  color: var(--rb-gold-300);
+  color: var(--rb-burgundy-500);
   margin-bottom: 10px;
 }
 .rb-step-theatre__rail {

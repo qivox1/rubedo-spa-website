@@ -24,6 +24,13 @@
   --rb-paper:     #FFFFFF;   /* card surfaces */
   --rb-cream:     #FBF8F1;   /* soft warm white — preferred page bg */
 
+  /* ---------- Color: Brand · Burgundy (Rubedo / Rotwerdung) ---------- */
+  --rb-burgundy-900: #4A1418;   /* deepest — letzte Schatten, Print-Akzent */
+  --rb-burgundy-700: #6B2027;   /* primary brand burgundy — Captions, Akzent-Headings */
+  --rb-burgundy-500: #8B2E2E;   /* signature burgundy — Robe, Akzent-Highlight */
+  --rb-burgundy-300: #B86B4B;   /* warm bronze-burgundy hover */
+  --rb-burgundy-100: #F4E0DC;   /* tint — Backdrop-Wash hinter Burgund-Text */
+
   /* ---------- Color: Functional ---------- */
   --rb-success:   #6E8B5C;
   --rb-warn:      #C68A2C;
