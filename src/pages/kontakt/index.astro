@@ -4,32 +4,39 @@ import { site } from '@/lib/site';
 
 const title = 'Kontakt & Anfahrt — Rubedo Spa Minden';
 const description = 'Rubedo Spa, Marienstraße 58, 32427 Minden. Mo–Fr 09:00–19:00 Uhr. Telefon ' + site.contact.phoneDisplay + ', E-Mail ' + site.contact.email + ' — persönlich, ohne Auto-Reply.';
+const heroImage = '/images/location/location-eingang-rubedo-spa-minden-hero.webp';
 ---
 
 <BaseLayout
   title={title}
   description={description}
+  heroImage={heroImage}
 >
 
   <article class="rb-page" data-page='kontakt'>
 
+    <!-- HERO mit Eingangs-Bild (Bild 17) -->
     <section class="rb-block-hero rb-block-hero--photo">
       <div class="rb-block-hero__photo">
-        <img src="/images/lina-studio-atmosphaere.webp" alt="Studio-Atmosphäre Rubedo Spa Minden — zwei Frauen im warmen Studioraum mit Bogentür, getrockneten Zweigen und sanftem Burgund-Akzent" width="896" height="1152" fetchpriority="high" />
+        <img src="/images/location/location-eingang-rubedo-spa-minden-hero.webp" alt="Eingang des Rubedo Spa Minden — Eckansicht der Stuckvilla mit moderner Anbauteil und Treppenaufgang in der Marienstraße 58" width="1600" height="753" fetchpriority="high" />
         <div class="rb-wrap">
           <div class="rb-block-hero__copy">
             <span class="rb-block-hero__eyebrow">Studio · Minden</span>
             <h1>Im Studio. Oder per Videocall.</h1>
-            <p class="rb-block-hero__subline">Persönliche Beratung, Termine vor Ort und kostenfreie 15-Minuten-Erstgespräche per Video.</p>
+            <p class="rb-block-hero__subline">Persönliche Beratung, Termine vor Ort und kostenfreie 15-Minuten-Erstgespräche per Video — Marienstraße 58, mitten in Minden.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="rb-block-contact">
+    <!-- Standort & Kontakt — mit Fassaden-Detail rechts -->
+    <section class="rb-block-imgtext rb-section--paper">
       <div class="rb-wrap">
-        <div class="rb-contact">
-          <div>
+        <div class="rb-imgtext rb-imgtext--reverse">
+          <div class="rb-imgtext__media">
+            <img src="/images/location/location-fassade-detail-rubedo-spa-minden-detail.webp" alt="Fassaden-Detail des Rubedo Spa — ionische Säule und Blumenreliefs an der Stuckfassade" width="800" height="376" loading="lazy" />
+          </div>
+          <div class="rb-imgtext__body">
             <span class="rb-eyebrow">Standort &amp; Kontakt</span>
             <h2>Marienstraße 58 · 32427 Minden.</h2>
             <p>Direkt im Herzen der Mindener Innenstadt — Parkmöglichkeiten in Gehweite, der Bahnhof Minden zu Fuß in 12 Minuten erreichbar. Wer mit dem Rad anreist, findet in der Marienstraße 58 sichere Abstellmöglichkeiten direkt am Studio-Eingang.</p>
@@ -41,10 +48,6 @@ const description = 'Rubedo Spa, Marienstraße 58, 32427 Minden. Mo–Fr 09:00�
               <li><strong>Sa</strong><span>10:00 — 16:00 Uhr · nach Vereinbarung</span></li>
               <li><strong>So</strong><span>geschlossen</span></li>
             </ul>
-          </div>
-          <div class="rb-contact__map">
-            <span class="rb-contact__pin"></span>
-            <span class="rb-contact__caption">Marienstraße 58 · Minden</span>
           </div>
         </div>
       </div>

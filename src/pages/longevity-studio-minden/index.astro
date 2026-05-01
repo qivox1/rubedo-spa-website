@@ -4,6 +4,7 @@ import { site } from '@/lib/site';
 
 const title = 'Longevity-Studio Minden — Rubedo Spa';
 const description = 'Longevity-Studio in Minden — Rubedo Spa von Monica Galletti, CIDESCO Beauty Therapist und DNA-Skin-Expertin. Drei Säulen, ein System, ein Studio in der Marienstraße.';
+const heroImage = '/images/location/location-frontal-rubedo-spa-minden-hero.webp';
 const url = `${site.url}/longevity-studio-minden/`;
 
 const aboutPageSchema = {
@@ -16,7 +17,7 @@ const aboutPageSchema = {
   inLanguage: 'de-DE',
   isPartOf: { '@type': 'WebSite', '@id': `${site.url}/#website`, url: site.url, name: site.name },
   mainEntity: { '@id': `${site.url}/#localbusiness` },
-  primaryImageOfPage: { '@type': 'ImageObject', url: `${site.url}/images/monica-portrait.webp` },
+  primaryImageOfPage: { '@type': 'ImageObject', url: `${site.url}${heroImage}` },
   breadcrumb: {
     '@type': 'BreadcrumbList',
     itemListElement: [
@@ -30,24 +31,27 @@ const aboutPageSchema = {
 <BaseLayout
   title={title}
   description={description}
+  heroImage={heroImage}
   schemaExtras={[aboutPageSchema]}
 >
 
   <article class="rb-page" data-page="longevity-studio">
 
-    <section class="rb-block-hero rb-block-hero--centered">
-      <div class="rb-wrap rb-block-hero__inner">
-        <div>
-          <span class="rb-block-hero__eyebrow">Studio · Minden</span>
-          <h1>Longevity-Studio Minden.</h1>
-          <p class="rb-block-hero__subline" style="margin-left:auto;margin-right:auto;">
-            Rubedo Spa ist kein klassisches Spa, sondern ein Longevity-Studio in der Marienstraße 58.
-            Drei Säulen, eine Haltung — geführt von Monica Galletti.
-          </p>
+    <!-- HERO mit Gebäude-Frontalansicht -->
+    <section class="rb-block-hero rb-block-hero--photo">
+      <div class="rb-block-hero__photo">
+        <img src="/images/location/location-frontal-rubedo-spa-minden-hero.webp" alt="Rubedo Spa — Frontalansicht der klassizistischen Stuckvilla in der Marienstraße 58, Minden" width="1472" height="704" fetchpriority="high" />
+        <div class="rb-wrap">
+          <div class="rb-block-hero__copy">
+            <span class="rb-block-hero__eyebrow">Studio · Minden</span>
+            <h1>Longevity-Studio Minden.</h1>
+            <p class="rb-block-hero__subline">Rubedo Spa ist kein klassisches Spa, sondern ein Longevity-Studio in der Marienstraße 58 — drei Säulen, eine Haltung, geführt von Monica Galletti.</p>
+          </div>
         </div>
       </div>
     </section>
 
+    <!-- Was ein Longevity-Studio ausmacht (Prose) -->
     <section class="rb-section rb-section--paper">
       <div class="rb-wrap rb-wrap--narrow rb-prose">
         <span class="rb-eyebrow">Was ein Longevity-Studio ausmacht</span>
@@ -65,17 +69,39 @@ const aboutPageSchema = {
           System, das auf den einzelnen Menschen zugeschnitten ist. Drei Säulen
           ergeben gemeinsam mehr als die Summe ihrer Teile.
         </p>
+      </div>
+    </section>
 
-        <h3>Studio &amp; Mensch</h3>
-        <p>
-          Das Studio wird von <a href="/ueber-monica/" rel="author">Monica Galletti</a>
-          geführt — CIDESCO Beauty Therapist, DNA Skin Expert (Beauty ID Switzerland),
-          NLP Master und seit über zehn Jahren in der internationalen 5-Sterne-Spa-Praxis tätig.
-          Unsere Arbeit basiert auf zertifizierter Ausbildung, sorgfältiger Recherche und
-          jahrelanger Erfahrung mit Gästen, die ihre Pflege ernst nehmen — und Zeit dafür
-          mitbringen wollen.
-        </p>
+    <!-- Studio & Mensch — mit Fassaden-Detailbild rechts -->
+    <section class="rb-block-imgtext rb-section--cream">
+      <div class="rb-wrap">
+        <div class="rb-imgtext rb-imgtext--reverse">
+          <div class="rb-imgtext__media">
+            <img src="/images/location/location-stuck-detail-rubedo-spa-minden-detail.webp" alt="Stuck-Detail an der Fassade des Rubedo Spa — Blumen-Reliefs und Kannelur-Pilaster" width="800" height="387" loading="lazy" />
+          </div>
+          <div class="rb-imgtext__body">
+            <span class="rb-eyebrow">Studio &amp; Mensch</span>
+            <h2>Wissenschaft trifft Ritual — auch im Gebäude.</h2>
+            <p>
+              Das Studio wird von <a href="/ueber-monica/" rel="author">Monica Galletti</a>
+              geführt — CIDESCO Beauty Therapist, DNA Skin Expert (Beauty ID Switzerland),
+              NLP Master und seit über zehn Jahren in der internationalen 5-Sterne-Spa-Praxis tätig.
+              Unsere Arbeit basiert auf zertifizierter Ausbildung, sorgfältiger Recherche und
+              jahrelanger Erfahrung mit Gästen, die ihre Pflege ernst nehmen — und Zeit dafür
+              mitbringen wollen.
+            </p>
+            <p>
+              Die Stuckfassade unseres Hauses in der Marienstraße ist über hundert Jahre alt — und für uns mehr als ein schöner Rahmen.
+              Sie steht für die gleiche Haltung wie unsere Behandlungen: Handwerk, das die Zeit überdauert, statt schnelllebiger Trends.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- Drei Säulen + Werte (Prose) -->
+    <section class="rb-section rb-section--paper">
+      <div class="rb-wrap rb-wrap--narrow rb-prose">
         <h3>Drei Säulen, ein System</h3>
         <p>Wir arbeiten ausschließlich entlang dieser drei Säulen — keine Behandlungen, die nicht eingebettet sind.</p>
         <ul>
@@ -117,6 +143,14 @@ const aboutPageSchema = {
       </div>
     </section>
 
+    <!-- Längsseite-Banner als Übergang vor CTA -->
+    <section class="rb-block-banner">
+      <figure class="rb-block-banner__photo">
+        <img src="/images/location/location-laengsseite-rubedo-spa-minden-hero.webp" alt="Längsansicht des Rubedo Spa Minden — Stuckvilla mit Sockelarkaden und altem Baumbestand" width="1600" height="753" loading="lazy" />
+      </figure>
+    </section>
+
+    <!-- CTA -->
     <section class="rb-block-cta">
       <div class="rb-wrap">
         <div class="rb-cta-band">
@@ -133,3 +167,9 @@ const aboutPageSchema = {
   </article>
 
 </BaseLayout>
+
+<style>
+  .rb-block-banner { margin: 0; padding: 0; }
+  .rb-block-banner__photo { margin: 0; padding: 0; line-height: 0; }
+  .rb-block-banner__photo img { display: block; width: 100%; height: auto; max-height: 520px; object-fit: cover; }
+</style>
