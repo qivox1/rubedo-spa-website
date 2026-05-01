@@ -526,7 +526,7 @@ a { color: inherit; }
 .rb-author-vignette__media {
   display: block;
   flex: 0 0 auto;
-  width: 84px; height: 105px;
+  width: 147px; height: 184px;   /* ~75% größer als die ursprünglichen 84×105 */
   border-radius: var(--rb-radius-sm);
   overflow: hidden;
   position: relative;
