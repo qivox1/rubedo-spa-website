@@ -100,27 +100,23 @@ a { color: inherit; }
   flex: 0 0 64px;
 }
 .rb-footer .rb-brand--logo .rb-brand__logo {
-  /* Footer-Variante: das Wappen sitzt wie ein gestempeltes Briefkopf-Siegel
-     auf einem warmen Cream-Kreis mit feinem Goldring. Der Cream-Kreis greift
-     den hellen Innenraum des Logos auf, sodass das weiße Inner-Detail
-     visuell mit dem Kreis verschmilzt — kein "weißer Klecks auf dunkel"
-     mehr, sondern ein gediegener Stempel. */
-  width: 100px; height: 100px;
-  flex: 0 0 100px;
-  background: var(--rb-cream);
-  border: 1px solid var(--rb-gold-700);
-  border-radius: 50%;
-  padding: 6px;
-  box-shadow:
-    0 0 0 4px rgba(215, 189, 134, 0.08),         /* sehr blasser Gold-Hof */
-    0 4px 18px rgba(0, 0, 0, 0.35);              /* weicher Schatten gegen Ink-900 */
-  transition: box-shadow var(--rb-dur-2) var(--rb-ease), transform var(--rb-dur-2) var(--rb-ease);
+  /* Footer-Variante: das Wappen ist transparent (RGBA-WebP, sauber freigestellt)
+     und sitzt direkt auf dem dunklen Footer. Kein Cream-Klecks, kein Stempel.
+     Der Phönix und der Goldring stechen gut hervor; die Rubedo-Wortmarke
+     bekommt dezent unten einen abgesetzten Cream-Tagline daneben (siehe
+     .rb-footer__brand-text), damit die Markenpräsenz vollständig bleibt
+     ohne die Wortmarke aus dem Logo selbst lesbar machen zu müssen. */
+  width: 96px; height: 96px;
+  flex: 0 0 96px;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.45));
+  transition: transform var(--rb-dur-2) var(--rb-ease);
 }
 .rb-footer .rb-brand--logo:hover .rb-brand__logo {
   transform: translateY(-1px);
-  box-shadow:
-    0 0 0 6px rgba(215, 189, 134, 0.12),
-    0 6px 22px rgba(0, 0, 0, 0.45);
 }
 .rb-footer__brand .rb-brand__mark { background: transparent; }
 .rb-footer__brand .rb-brand__mark img {
