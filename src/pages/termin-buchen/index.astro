@@ -44,11 +44,11 @@ const hasBookingEmbed = !!site.booking.embedUrl;
             <form class="rb-booking-form" name="termin" method="POST" action="/api/termin" data-reveal>
               <div class="rb-form-row">
                 <label>
-                  <span>Name *</span>
+                  <span>Name <em class="rb-required" aria-hidden="true">*</em></span>
                   <input type="text" name="name" required autocomplete="name" />
                 </label>
                 <label>
-                  <span>E-Mail *</span>
+                  <span>E-Mail <em class="rb-required" aria-hidden="true">*</em></span>
                   <input type="email" name="email" required autocomplete="email" />
                 </label>
               </div>
