@@ -5,6 +5,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 const title = 'Magazin — Notizen aus dem Studio';
 const description =
   'Notizen aus dem Studio: Texte über Technologie, Rituale und die Frage, wie sich Schönheit anfühlt, wenn man sie ernst nimmt — von Monica Galletti.';
+const heroImage = '/images/magazin-wellness-hero.webp';
 
 // Alle Artikel laden, Drafts ausschließen, sortiert nach Datum (neueste zuerst)
 const all = await getCollection('magazin', ({ data }) => !data.draft);
@@ -62,7 +63,7 @@ const isLg = (i: number) => i === 0;
 const isLgRight = (i: number) => i === 6;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} heroImage={heroImage}>
   <article class="rb-page" data-page="magazin">
 
     {/* HERO · Editorial Masthead */}
@@ -159,7 +160,7 @@ const isLgRight = (i: number) => i === 6;
         <div class="rb-magov-worlds__grid">
           {worlds.map((w) => (
             <a class="rb-magov-world" href={`#${w.cat}`} data-cat={w.cat}>
-              <div class="rb-magov-world__media"><img src={w.image} alt={`${w.title} — Vorschau-Bild`} width="600" height="400" /></div>
+              <div class="rb-magov-world__media"><img src={w.image} alt={`${w.title} — Vorschau-Bild`} width="600" height="400" loading="lazy" decoding="async" /></div>
               <div class="rb-magov-world__body">
                 <span class="rb-magov-world__num">{w.num}</span>
                 <h3 class="rb-magov-world__title">{w.title}</h3>

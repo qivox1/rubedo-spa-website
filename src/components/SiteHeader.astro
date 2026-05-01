@@ -137,7 +137,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
   <aside class="rb-mnav__panel" role="dialog" aria-modal="true" aria-label="Hauptnavigation">
     <header class="rb-mnav__head">
       <a class="rb-mnav__brand" href="/" data-mobile-close-link>
-        <img src="/logo-rubedo-spa-64.webp" srcset="/logo-rubedo-spa-64.webp 1x, /logo-rubedo-spa-128.webp 2x" alt={site.name} width="48" height="48" data-ai="false" />
+        <img src="/logo-rubedo-spa-64.webp" srcset="/logo-rubedo-spa-64.webp 1x, /logo-rubedo-spa-128.webp 2x" alt={site.name} width="48" height="48" loading="lazy" decoding="async" data-ai="false" />
         <span>
           <strong>Rubedo Spa</strong>
           <em>Smart Beauty · Minden</em>
@@ -232,13 +232,13 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
           <strong>{site.contact.phoneDisplay}</strong>
         </span>
       </a>
-      <a href={`mailto:${site.contact.email}`} class="rb-mnav__contact-item">
+      <a href={`mailto:${site.contact.email}`} class="rb-mnav__contact-item" aria-label={`E-Mail an ${site.contact.email}`}>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
           <polyline points="22,6 12,13 2,6"/>
         </svg>
         <span>
-          <em aria-hidden="true">E-Mail schreiben</em>
+          <em aria-hidden="true" data-decor>E-Mail schreiben</em>
           <strong>{site.contact.email}</strong>
         </span>
       </a>

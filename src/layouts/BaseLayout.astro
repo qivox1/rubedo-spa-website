@@ -61,6 +61,21 @@ const currentPath = Astro.url.pathname;
     <link rel="canonical" href={canonicalUrl} />
     {noindex && <meta name="robots" content="noindex,nofollow" />}
 
+    {/* Query-Parameter-Varianten (z. B. /termin-buchen/?intent=…) sind UI-State,
+        nicht eigenständiger Content — robots:noindex setzen, damit Crawler
+        sie nicht als Duplikat-Pages werten. Canonical zeigt sowieso auf die
+        Basisroute ohne Query. */}
+    {!noindex && (
+      <script is:inline>
+        if (typeof location !== 'undefined' && location.search) {
+          var m = document.createElement('meta');
+          m.name = 'robots';
+          m.content = 'noindex,follow';
+          document.head.appendChild(m);
+        }
+      </script>
+    )}
+
     {/* Open Graph / Twitter */}
     <meta property="og:type" content={articleMeta ? 'article' : 'website'} />
     <meta property="og:title" content={fullTitle} />
@@ -91,9 +106,10 @@ const currentPath = Astro.url.pathname;
     <link rel="alternate icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/logo-rubedo-spa.png" />
 
-    {/* Preload des Logos auf Seiten ohne dediziertes heroImage — verhindert,
-        dass das Logo zum LCP-Element wird ohne Preload-Hint. */}
-    {!heroImage && (
+    {/* LCP-Preload: heroImage hat Vorrang, sonst das Logo. */}
+    {heroImage ? (
+      <link rel="preload" as="image" href={heroImage} fetchpriority="high" />
+    ) : (
       <link rel="preload" as="image" href="/logo-rubedo-spa-64.webp" imagesrcset="/logo-rubedo-spa-64.webp 1x, /logo-rubedo-spa-128.webp 2x" fetchpriority="high" />
     )}
 
