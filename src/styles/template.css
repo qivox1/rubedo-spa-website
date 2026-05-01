@@ -504,6 +504,89 @@ a { color: inherit; }
 }
 .rb-pillar__link:hover { color: var(--rb-gold-900); border-bottom-color: var(--rb-gold-700); }
 
+/* ----- Pillars head: right column stacks lead + author vignette ----- */
+.rb-block-pillars__head-right {
+  display: flex; flex-direction: column;
+  gap: var(--rb-space-5);
+}
+.rb-block-pillars__head-right > p { margin: 0; }
+
+/* ----- Author Vignette (Inhaber-Setzung in Pillars-Head) -----
+   Premium minimalistic byline: small portrait left, Cormorant name top,
+   role caption + arrow link below. Sits unobtrusively beneath the lead
+   paragraph in the right column of the pillars head. */
+.rb-author-vignette {
+  display: flex;
+  align-items: center;
+  gap: var(--rb-space-4);
+  margin: 0;
+  padding-top: var(--rb-space-4);
+  border-top: 1px solid var(--rb-ink-100);
+}
+.rb-author-vignette__media {
+  display: block;
+  flex: 0 0 auto;
+  width: 84px; height: 105px;
+  border-radius: var(--rb-radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+.rb-author-vignette__media img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--rb-dur-2) var(--rb-ease);
+}
+.rb-author-vignette__media:hover img {
+  transform: scale(1.04);
+}
+.rb-author-vignette__cap {
+  display: flex; flex-direction: column;
+  gap: 4px;
+}
+.rb-author-vignette__name {
+  font-family: var(--rb-font-display);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.15;
+  color: var(--rb-ink-900);
+}
+.rb-author-vignette__role {
+  font-family: var(--rb-font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: var(--rb-tracking-widest);
+  text-transform: uppercase;
+  color: var(--rb-gold-700);
+}
+.rb-author-vignette__link {
+  margin-top: 6px;
+  align-self: flex-start;
+  font-family: var(--rb-font-body);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: var(--rb-tracking-wider);
+  text-transform: uppercase;
+  color: var(--rb-gold-700);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rb-gold-300);
+  padding-bottom: 2px;
+  transition: color var(--rb-dur-1) var(--rb-ease),
+              border-bottom-color var(--rb-dur-1) var(--rb-ease);
+}
+.rb-author-vignette__link:hover {
+  color: var(--rb-red-500);
+  border-bottom-color: var(--rb-red-500);
+}
+.rb-author-vignette__link::after {
+  content: " →";
+  display: inline-block;
+  transition: transform var(--rb-dur-1) var(--rb-ease);
+}
+.rb-author-vignette__link:hover::after {
+  transform: translateX(2px);
+}
+
 /* ============================================================
    BLOCK · PROSE (narrative text)
    ============================================================ */
