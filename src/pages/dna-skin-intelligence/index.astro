@@ -24,7 +24,7 @@ const heroImage = '/images/dna-skin-hero.webp';
           <div class="rb-block-hero__copy">
             <span class="rb-block-hero__eyebrow">Säule 01 · Innen</span>
             <h1>Hautpflege, die deinen Code versteht.</h1>
-            <p class="rb-block-hero__subline">Personalisierte Hautpflege auf Basis von 20 Beauty-Genen — entwickelt mit Beauty ID Switzerland.</p>
+            <p class="rb-block-hero__subline">Personalisierte Hautpflege auf Basis von 20 Beauty-Genen — wissenschaftlich begleitet.</p>
             <div class="rb-block-hero__cta">
               <a href="/termin-buchen/" class="rb-btn rb-btn--primary rb-btn--lg">Kostenfreies 15-Min-Erstgespräch</a>
               <a href="#programm" class="rb-btn rb-btn--ghost">Programm im Detail</a>
@@ -266,7 +266,7 @@ const heroImage = '/images/dna-skin-hero.webp';
           </div>
           <div class="rb-step-theatre__caption" data-step-caption="2">
             <span class="rb-step-theatre__caption-eyebrow">Schritt 02 · Auswertung</span>
-            Zwei bis drei Wochen ruhige Präzision — im zertifizierten Genlabor in Salzburg.
+            Zwei bis drei Wochen ruhige Präzision — im zertifizierten Genlabor.
           </div>
           <div class="rb-step-theatre__caption" data-step-caption="3">
             <span class="rb-step-theatre__caption-eyebrow">Schritt 03 · DNA-Report</span>
@@ -291,7 +291,7 @@ const heroImage = '/images/dna-skin-hero.webp';
           <button type="button" class="rb-step-theatre__step" data-step="2">
             <span class="rb-step-theatre__step-num">02</span>
             <h3 class="rb-step-theatre__step-title">Auswertung</h3>
-            <p class="rb-step-theatre__step-text">Im zertifizierten Genlabor (Novogenia, Salzburg) in 2–3 Wochen.</p>
+            <p class="rb-step-theatre__step-text">Im zertifizierten Genlabor (Novogenia) in 2–3 Wochen.</p>
           </button>
           <button type="button" class="rb-step-theatre__step" data-step="3">
             <span class="rb-step-theatre__step-num">03</span>
@@ -311,10 +311,19 @@ const heroImage = '/images/dna-skin-hero.webp';
         </div>
       </div>
 
-      <script type="module">
-        const stage = document.querySelector('[data-theatre]');
-        const rail = document.querySelector('[data-theatre-rail]');
-        if (stage && rail) {
+      <script>
+        // Step-Theatre-Initialisierung. Muss bei View-Transitions UND bei
+        // klassischem Pageload laufen — sonst stehen alle Bilder beim ersten
+        // Aufruf der Page mit opacity:0 (kein .is-active) und der User sieht
+        // ein leeres Stage-Rectangle, bis er einen Step antippt.
+        // Lösung: an astro:page-load hängen, das auf beiden Pfaden feuert.
+        function initDnaStepTheatre() {
+          const stage = document.querySelector('[data-theatre]');
+          const rail = document.querySelector('[data-theatre-rail]');
+          if (!stage || !rail) return;
+          if (stage.dataset.theatreReady === '1') return;  // re-init guard
+          stage.dataset.theatreReady = '1';
+
           const imgs = stage.querySelectorAll('img[data-step-img]');
           const caps = stage.querySelectorAll('[data-step-caption]');
           const steps = rail.querySelectorAll('[data-step]');
@@ -323,14 +332,24 @@ const heroImage = '/images/dna-skin-hero.webp';
             caps.forEach(c => c.classList.toggle('is-active', c.dataset.stepCaption === n));
             steps.forEach(s => s.classList.toggle('is-active', s.dataset.step === n));
           };
-          // Init: erstes Bild + erste Caption aktiv
+
+          // Erstes Bild sofort sichtbar machen — kein Frame-Lag.
           setActive('1');
-          // Hover (Desktop) + Click/Tap (Mobile)
+
           steps.forEach(s => {
             s.addEventListener('mouseenter', () => setActive(s.dataset.step));
-            s.addEventListener('focus', () => setActive(s.dataset.step));
-            s.addEventListener('click', () => setActive(s.dataset.step));
+            s.addEventListener('focus',      () => setActive(s.dataset.step));
+            s.addEventListener('click',      () => setActive(s.dataset.step));
           });
+        }
+        // astro:page-load feuert sowohl beim ersten Pageload als auch nach
+        // jeder View-Transition. DOMContentLoaded fängt nur den allerersten
+        // Pageload und ist als zusätzlicher Sicherheitsnetz da.
+        document.addEventListener('astro:page-load', initDnaStepTheatre);
+        if (document.readyState !== 'loading') {
+          initDnaStepTheatre();
+        } else {
+          document.addEventListener('DOMContentLoaded', initDnaStepTheatre);
         }
       </script>
     </section>
