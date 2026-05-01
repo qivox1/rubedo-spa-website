@@ -36,30 +36,13 @@ a { color: inherit; }
   letter-spacing: 0.06em;
 }
 .rb-topbar__inner {
-  /* Zentriert, kompakt, mit echtem Seitenrand-Padding (vom .rb-wrap geerbt).
-     Trenner sind kleine Gold-Diamanten, nicht sichtbarer Text — wirken
-     ruhiger und passen zur Brand-Diamond-Logik im Hero/Footer. */
-  display: flex; justify-content: center; align-items: center;
-  flex-wrap: wrap;
+  display: flex; justify-content: space-between; align-items: center;
   padding: 10px 0; gap: var(--rb-space-5);
 }
-.rb-topbar a { text-decoration: none; color: var(--rb-gold-300); transition: color var(--rb-dur-1) var(--rb-ease); }
+.rb-topbar a { text-decoration: none; color: var(--rb-gold-300); }
 .rb-topbar a:hover { color: var(--rb-paper); }
-.rb-topbar__item { display: inline-flex; align-items: center; }
-.rb-topbar__cta { letter-spacing: 0.04em; }
-.rb-topbar__cta:hover span { transform: translateX(2px); }
-.rb-topbar__cta span { display: inline-block; margin-left: 6px; transition: transform var(--rb-dur-1) var(--rb-ease); }
-.rb-topbar__sep {
-  width: 4px; height: 4px;
-  background: var(--rb-gold-300);
-  transform: rotate(45deg);
-  opacity: 0.55;
-}
-@media (max-width: 600px) {
-  /* Auf Mobile: Items untereinander stapeln, Trenner unsichtbar */
-  .rb-topbar__inner { gap: 4px var(--rb-space-3); }
-  .rb-topbar__sep { display: none; }
-}
+.rb-topbar__meta { display: flex; gap: var(--rb-space-5); }
+.rb-topbar__meta span { display: inline-flex; align-items: center; gap: 6px; }
 
 .rb-header {
   position: sticky; top: 0; z-index: 50;
@@ -72,7 +55,7 @@ a { color: inherit; }
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: var(--rb-space-6);
-  padding: 14px 0;
+  padding: 18px 0;
 }
 .rb-brand {
   display: flex; align-items: center; gap: 14px;
@@ -87,37 +70,10 @@ a { color: inherit; }
 }
 .rb-brand__mark img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
-/* Full-color logo (Wappen mit Phönix + RUBEDO/SPA-Wortmarke).
-   Strict 64×64 square with object-fit:contain, damit das Wappen niemals
-   verzerrt wird. Vorher: width:auto + height:56px → der img wurde im
-   flex-Container auf ~12px Breite gequetscht, weil der Browser keine
-   intrinsic-aspect-ratio aus dem 64×63-WebP zog. */
-.rb-brand--logo { display: inline-flex; align-items: center; text-decoration: none; gap: 0; flex: 0 0 auto; }
-.rb-brand--logo .rb-brand__logo {
-  display: block;
-  width: 64px; height: 64px;
-  object-fit: contain;
-  flex: 0 0 64px;
-}
-.rb-footer .rb-brand--logo .rb-brand__logo {
-  /* Footer-Variante: das Wappen ist transparent (RGBA-WebP, sauber freigestellt)
-     und sitzt direkt auf dem dunklen Footer. Kein Cream-Klecks, kein Stempel.
-     Der Phönix und der Goldring stechen gut hervor; die Rubedo-Wortmarke
-     bekommt dezent unten einen abgesetzten Cream-Tagline daneben (siehe
-     .rb-footer__brand-text), damit die Markenpräsenz vollständig bleibt
-     ohne die Wortmarke aus dem Logo selbst lesbar machen zu müssen. */
-  width: 96px; height: 96px;
-  flex: 0 0 96px;
-  background: transparent;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  filter: drop-shadow(0 4px 14px rgba(0,0,0,0.45));
-  transition: transform var(--rb-dur-2) var(--rb-ease);
-}
-.rb-footer .rb-brand--logo:hover .rb-brand__logo {
-  transform: translateY(-1px);
-}
+/* Full-color SVG wordmark variant — replaces mark + name pair */
+.rb-brand--logo { display: inline-flex; align-items: center; text-decoration: none; gap: 0; }
+.rb-brand--logo .rb-brand__logo { display: block; height: 56px; width: auto; }
+.rb-footer .rb-brand--logo .rb-brand__logo { height: 84px; background: var(--rb-paper); padding: 8px; border-radius: 50%; }
 .rb-footer__brand .rb-brand__mark { background: transparent; }
 .rb-footer__brand .rb-brand__mark img {
   filter: brightness(0) invert(1) sepia(0.4) saturate(2) hue-rotate(8deg);
@@ -140,7 +96,7 @@ a { color: inherit; }
   margin-top: 4px;
 }
 
-.rb-nav { display: flex; align-items: center; justify-content: center; gap: var(--rb-space-5); flex-wrap: nowrap; }
+.rb-nav { display: flex; align-items: center; justify-content: center; gap: var(--rb-space-5); }
 .rb-nav__item {
   position: relative;
   font-family: var(--rb-font-body);
@@ -150,35 +106,20 @@ a { color: inherit; }
   text-transform: uppercase;
   color: var(--rb-ink-900);
   text-decoration: none;
-  padding: 12px 2px;
+  padding: 14px 2px;
   line-height: 1;
   cursor: pointer;
-  white-space: nowrap;
   transition: color var(--rb-dur-1) var(--rb-ease);
 }
 .rb-nav__item:hover { color: var(--rb-gold-700); }
-.rb-nav__item.is-active { color: var(--rb-ink-900); }
-/* Active-Indikator: 2 px Hairline in Rubedo-Red — ersetzt das frühere
-   1 px Gold. Damit wird "du bist hier" zum einzigen Brand-Anker in der Nav,
-   ohne dass Rot Fläche bekommt. */
+.rb-nav__item.is-active { color: var(--rb-gold-700); }
 .rb-nav__item.is-active::before {
-  content: ""; position: absolute; left: 6px; right: 6px; bottom: 2px;
-  height: 2px; background: var(--rb-red-500);
+  content: ""; position: absolute; left: 6px; right: 6px; bottom: 4px;
+  height: 1px; background: var(--rb-gold-500);
 }
-/* Has-sub-Indikator: sauberes Caret-Down statt rotated chevron, Gold-700,
-   etwas kleiner, leicht abgesetzter Tracking. */
 .rb-nav__item--has-sub::after {
-  content: "";
-  display: inline-block;
-  margin-left: 8px;
-  width: 6px; height: 6px;
-  border-right: 1.5px solid var(--rb-gold-700);
-  border-bottom: 1.5px solid var(--rb-gold-700);
-  transform: translateY(-2px) rotate(45deg);
-  transition: transform var(--rb-dur-1) var(--rb-ease);
-}
-.rb-nav__item--has-sub:hover::after {
-  transform: translateY(0) rotate(45deg);
+  content: "›"; display: inline-block; margin-left: 6px; transform: rotate(90deg);
+  font-size: 14px; color: var(--rb-gold-500);
 }
 
 .rb-mega {
@@ -234,6 +175,101 @@ a { color: inherit; }
 }
 .rb-mega__links a::before {
   content: "→"; color: var(--rb-gold-500); font-size: 14px;
+}
+
+/* ============================================================
+   DESKTOP DROPDOWN-NAV (Flyout pro Top-Level-Item)
+   ============================================================ */
+.rb-nav__group {
+  position: relative;
+  display: flex; align-items: center;
+}
+.rb-nav__flyout {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 8px);
+  min-width: 320px;
+  max-width: 380px;
+  background: var(--rb-paper);
+  border: 1px solid var(--rb-ink-100);
+  border-radius: 8px;
+  box-shadow: 0 18px 48px rgba(15,12,10,0.12), 0 4px 12px rgba(15,12,10,0.06);
+  padding: 10px 0;
+  margin-top: 8px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 220ms cubic-bezier(.2,.65,.3,1),
+              transform 220ms cubic-bezier(.2,.65,.3,1),
+              visibility 0s linear 220ms;
+  z-index: 60;
+}
+/* unsichtbarer Brücken-Bereich, damit Cursor zwischen Trigger und Flyout nicht "abreißt" */
+.rb-nav__flyout::before {
+  content: "";
+  position: absolute;
+  top: -16px; left: 0; right: 0; height: 16px;
+}
+.rb-nav__group:hover .rb-nav__flyout,
+.rb-nav__group:focus-within .rb-nav__flyout,
+.rb-nav__group.is-open .rb-nav__flyout {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0);
+  transition: opacity 220ms cubic-bezier(.2,.65,.3,1),
+              transform 220ms cubic-bezier(.2,.65,.3,1),
+              visibility 0s linear 0s;
+}
+.rb-nav__flyout-link {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: var(--rb-ink-900);
+  border-left: 3px solid transparent;
+  transition: background var(--rb-dur-1) var(--rb-ease),
+              border-color var(--rb-dur-1) var(--rb-ease),
+              color var(--rb-dur-1) var(--rb-ease);
+}
+.rb-nav__flyout-link:hover,
+.rb-nav__flyout-link:focus-visible {
+  background: var(--rb-cream);
+  border-left-color: var(--rb-gold-500);
+  outline: none;
+}
+.rb-nav__flyout-link--lead {
+  border-bottom: 1px solid var(--rb-ink-100);
+  margin-bottom: 6px;
+  padding-bottom: 14px;
+}
+.rb-nav__flyout-head {
+  display: block;
+  font-family: var(--rb-font-body);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--rb-ink-900);
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+.rb-nav__flyout-link--lead .rb-nav__flyout-head { color: var(--rb-gold-700); }
+.rb-nav__flyout-desc {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--rb-font-body);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--rb-ink-500);
+}
+.rb-nav__item--has-sub {
+  cursor: pointer;
+}
+/* Caret rotiert wenn Flyout offen */
+.rb-nav__group:hover .rb-nav__item--has-sub::after,
+.rb-nav__group:focus-within .rb-nav__item--has-sub::after,
+.rb-nav__group.is-open .rb-nav__item--has-sub::after {
+  color: var(--rb-gold-700);
 }
 
 /* ============================================================
@@ -297,18 +333,8 @@ a { color: inherit; }
   color: var(--rb-ink-500);
   margin: 0 0 var(--rb-space-7);
 }
-/* Hero micro-row separators: Mini-Rauten in Rubedo-Red statt Gold-Mittelpunkten.
-   Die selbe Brand-Diamond-Mechanik wie in der Eyebrow, eine Etage tiefer.
-   4 px klein, opacity 0.7 — präsent aber nicht laut. */
 .rb-block-hero__micro span:not(:last-child)::after {
-  content: "";
-  display: inline-block;
-  width: 4px; height: 4px;
-  margin-left: var(--rb-space-3);
-  background: var(--rb-red-500);
-  transform: rotate(45deg) translateY(-1px);
-  opacity: 0.7;
-  vertical-align: middle;
+  content: "·"; margin-left: var(--rb-space-3); color: var(--rb-gold-500);
 }
 .rb-block-hero__cta {
   display: flex; flex-wrap: wrap; gap: var(--rb-space-4);
@@ -404,13 +430,7 @@ a { color: inherit; }
 .rb-block-hero--photo .rb-block-hero__eyebrow::before { background: var(--rb-gold-300); }
 .rb-block-hero--photo .rb-block-hero__subline { color: rgba(255,255,255,0.92); max-width: 38ch; }
 .rb-block-hero--photo .rb-block-hero__micro { color: rgba(255,255,255,0.75); }
-/* Auf dunklem Foto-Hero: gleiches Rubedo-Red-500 wie überall, etwas mehr
-   Opacity damit der Punkt auf dem Foto wahrnehmbar bleibt. Niemals Red-300
-   nehmen — das ist Rosa, nicht Brand-Rot. */
-.rb-block-hero--photo .rb-block-hero__micro span:not(:last-child)::after {
-  background: var(--rb-red-500);
-  opacity: 0.95;
-}
+.rb-block-hero--photo .rb-block-hero__micro span:not(:last-child)::after { color: var(--rb-gold-300); }
 .rb-block-hero--photo .rb-btn--ghost {
   border-color: rgba(255,255,255,0.6); color: var(--rb-paper);
 }
@@ -504,89 +524,6 @@ a { color: inherit; }
 }
 .rb-pillar__link:hover { color: var(--rb-gold-900); border-bottom-color: var(--rb-gold-700); }
 
-/* ----- Pillars head: right column stacks lead + author vignette ----- */
-.rb-block-pillars__head-right {
-  display: flex; flex-direction: column;
-  gap: var(--rb-space-5);
-}
-.rb-block-pillars__head-right > p { margin: 0; }
-
-/* ----- Author Vignette (Inhaber-Setzung in Pillars-Head) -----
-   Premium minimalistic byline: small portrait left, Cormorant name top,
-   role caption + arrow link below. Sits unobtrusively beneath the lead
-   paragraph in the right column of the pillars head. */
-.rb-author-vignette {
-  display: flex;
-  align-items: center;
-  gap: var(--rb-space-4);
-  margin: 0;
-  padding-top: var(--rb-space-4);
-  border-top: 1px solid var(--rb-ink-100);
-}
-.rb-author-vignette__media {
-  display: block;
-  flex: 0 0 auto;
-  width: 147px; height: 184px;   /* ~75% größer als die ursprünglichen 84×105 */
-  border-radius: var(--rb-radius-sm);
-  overflow: hidden;
-  position: relative;
-}
-.rb-author-vignette__media img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform var(--rb-dur-2) var(--rb-ease);
-}
-.rb-author-vignette__media:hover img {
-  transform: scale(1.04);
-}
-.rb-author-vignette__cap {
-  display: flex; flex-direction: column;
-  gap: 4px;
-}
-.rb-author-vignette__name {
-  font-family: var(--rb-font-display);
-  font-weight: 500;
-  font-size: 22px;
-  line-height: 1.15;
-  color: var(--rb-ink-900);
-}
-.rb-author-vignette__role {
-  font-family: var(--rb-font-body);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: var(--rb-tracking-widest);
-  text-transform: uppercase;
-  color: var(--rb-gold-700);
-}
-.rb-author-vignette__link {
-  margin-top: 6px;
-  align-self: flex-start;
-  font-family: var(--rb-font-body);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: var(--rb-tracking-wider);
-  text-transform: uppercase;
-  color: var(--rb-gold-700);
-  text-decoration: none;
-  border-bottom: 1px solid var(--rb-gold-300);
-  padding-bottom: 2px;
-  transition: color var(--rb-dur-1) var(--rb-ease),
-              border-bottom-color var(--rb-dur-1) var(--rb-ease);
-}
-.rb-author-vignette__link:hover {
-  color: var(--rb-red-500);
-  border-bottom-color: var(--rb-red-500);
-}
-.rb-author-vignette__link::after {
-  content: " →";
-  display: inline-block;
-  transition: transform var(--rb-dur-1) var(--rb-ease);
-}
-.rb-author-vignette__link:hover::after {
-  transform: translateX(2px);
-}
-
 /* ============================================================
    BLOCK · PROSE (narrative text)
    ============================================================ */
@@ -630,35 +567,9 @@ a { color: inherit; }
   padding-left: 22px;
   margin: 0 0 var(--rb-space-5);
 }
-.rb-prose ul li::marker { color: var(--rb-red-500); }
+.rb-prose ul li::marker { color: var(--rb-gold-500); }
 .rb-prose li { margin-bottom: var(--rb-space-3); }
 .rb-prose strong { color: var(--rb-ink-900); font-weight: 500; }
-.rb-prose blockquote {
-  /* Editorial Akzent: 2 px Rubedo-Red-Linke als Kapitellinie, sehr blasser
-     Red-50 Wash dahinter. Gibt dem Zitat in einem langen Magazinartikel
-     eine ruhige Brand-Markierung, ohne den Lesefluss zu brechen. */
-  margin: var(--rb-space-7) 0;
-  padding: var(--rb-space-4) var(--rb-space-6);
-  border-left: 2px solid var(--rb-red-500);
-  background: var(--rb-red-50);
-  font-family: var(--rb-font-display);
-  font-style: italic;
-  font-size: clamp(20px, 2vw, 24px);
-  line-height: 1.45;
-  color: var(--rb-ink-900);
-  text-wrap: pretty;
-}
-.rb-prose blockquote p { margin: 0; }
-.rb-prose blockquote cite {
-  display: block;
-  margin-top: var(--rb-space-3);
-  font-family: var(--rb-font-body);
-  font-style: normal;
-  font-size: 12px;
-  letter-spacing: var(--rb-tracking-wider);
-  text-transform: uppercase;
-  color: var(--rb-gold-700);
-}
 .rb-prose a { color: var(--rb-gold-700); border-bottom: 1px solid var(--rb-gold-300); text-decoration: none; }
 .rb-prose a:hover { color: var(--rb-gold-900); border-bottom-color: var(--rb-gold-700); }
 
@@ -675,20 +586,6 @@ a { color: inherit; }
 
 .rb-rule-flourish__diamond { width: 6px; height: 6px; background: currentColor; transform: rotate(45deg); }
 
-/* ----- Brand-mark micro-accent in eyebrows ------------------
-   A single 6px Rubedo-Red diamond used as a separator inside an eyebrow
-   (e.g. "Longevity-Studio ◆ Minden" on the homepage hero). The only place
-   red leaves the wordmark. Used ONCE per page maximum. */
-.rb-eyebrow__diamond {
-  display: inline-block;
-  width: 6px; height: 6px;
-  background: var(--rb-red-500);
-  transform: rotate(45deg);
-  margin: 0 4px;
-  flex: 0 0 auto;
-  align-self: center;
-  opacity: 0.9;
-}
 
 /* ============================================================
    BLOCK · PULL QUOTE
@@ -722,9 +619,7 @@ a { color: inherit; }
   text-wrap: balance;
 }
 .rb-block-quote cite {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--rb-space-3);
+  display: block;
   margin-top: var(--rb-space-5);
   font-style: normal;
   font-family: var(--rb-font-body);
@@ -732,17 +627,6 @@ a { color: inherit; }
   letter-spacing: var(--rb-tracking-wider);
   text-transform: uppercase;
   color: var(--rb-gold-700);
-}
-.rb-block-quote cite::before {
-  /* Brand-Diamond in Red 500 als kleines editorial Markenzeichen vor dem
-     Cite. Sehr klein, sehr leise — aber konsistent mit der Diamond-Logik
-     in Eyebrow und Footer. */
-  content: "";
-  display: inline-block;
-  width: 5px; height: 5px;
-  background: var(--rb-red-500);
-  transform: rotate(45deg);
-  opacity: 0.85;
 }
 
 /* ============================================================
@@ -1059,7 +943,7 @@ a { color: inherit; }
   color: var(--rb-ink-700);
   padding-left: 22px; margin: 0 0 var(--rb-space-4);
 }
-.rb-imgtext__body ul li::marker { color: var(--rb-red-500); }
+.rb-imgtext__body ul li::marker { color: var(--rb-gold-500); }
 .rb-imgtext__body ul li { margin-bottom: 8px; }
 .rb-imgtext__body strong { color: var(--rb-ink-900); font-weight: 500; }
 
@@ -1137,15 +1021,12 @@ a { color: inherit; }
   background: linear-gradient(180deg, transparent 50%, rgba(15,12,10,0.5) 100%);
 }
 .rb-bio__body .rb-eyebrow { display: block; margin-bottom: 12px; }
-.rb-bio__body h1,
 .rb-bio__body h2 {
   font-family: var(--rb-font-display);
   font-weight: 400;
-  font-size: clamp(44px, 6vw, 84px);  /* identisch zur Hero-H1 anderer Pages */
-  line-height: 1.02;
-  letter-spacing: -0.012em;
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1.05;
   margin: 0 0 var(--rb-space-3);
-  color: var(--rb-ink-900);
   text-wrap: balance;
 }
 .rb-bio__credentials {
@@ -1291,106 +1172,6 @@ a { color: inherit; }
 .rb-cta-band__action {
   position: relative;
   display: flex; align-items: center; gap: var(--rb-space-3);
-}
-
-/* ============================================================
-   BLOCK · CTA WHISPER (dezenter Inline-CTA für lange Pages)
-   Editorial, leise, premium. Kein dunkler Banner — sondern eine
-   ruhige Cream-Setzung mit Cormorant-Headline, einem Red-500-Diamant-
-   Eyebrow und einem Link-CTA (kein Pill-Button). Soll zwischen den
-   großen Content-Sektionen einer langen Page sitzen, ohne den
-   Lesefluss zu unterbrechen.
-   ============================================================ */
-.rb-block-cta-whisper {
-  padding: var(--rb-space-7) 0;
-}
-.rb-cta-whisper {
-  max-width: 720px;
-  margin: 0 auto;
-  text-align: center;
-  padding: var(--rb-space-7) var(--rb-space-6);
-  background: var(--rb-cream);
-  border: 1px solid var(--rb-ink-100);
-  border-radius: var(--rb-radius-md);
-  position: relative;
-}
-.rb-cta-whisper::before {
-  /* feine Gold-Hairline oben + unten als ruhige editorial Klammer */
-  content: "";
-  position: absolute;
-  top: -1px; left: 50%; transform: translateX(-50%);
-  width: 64px; height: 2px;
-  background: var(--rb-gold-500);
-  opacity: 0.6;
-}
-.rb-cta-whisper__eyebrow {
-  display: inline-flex; align-items: center; gap: var(--rb-space-3);
-  font-family: var(--rb-font-body);
-  font-size: var(--rb-text-xs);
-  font-weight: 500;
-  letter-spacing: var(--rb-tracking-widest);
-  text-transform: uppercase;
-  color: var(--rb-ink-700);
-  margin-bottom: var(--rb-space-3);
-}
-.rb-cta-whisper__eyebrow::before,
-.rb-cta-whisper__eyebrow::after {
-  content: "";
-  width: 5px; height: 5px;
-  background: var(--rb-red-500);
-  transform: rotate(45deg);
-  opacity: 0.85;
-}
-.rb-cta-whisper h3 {
-  font-family: var(--rb-font-display);
-  font-weight: 400;
-  font-size: clamp(24px, 2.6vw, 32px);
-  line-height: 1.2;
-  color: var(--rb-ink-900);
-  margin: 0 0 var(--rb-space-3);
-  text-wrap: balance;
-}
-.rb-cta-whisper p {
-  font-family: var(--rb-font-body);
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--rb-ink-700);
-  margin: 0 0 var(--rb-space-5);
-  max-width: 52ch;
-  margin-left: auto;
-  margin-right: auto;
-}
-.rb-cta-whisper__link {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--rb-font-body);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: var(--rb-tracking-wider);
-  text-transform: uppercase;
-  color: var(--rb-gold-700);
-  text-decoration: none;
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--rb-gold-300);
-  transition: color var(--rb-dur-1) var(--rb-ease),
-              border-bottom-color var(--rb-dur-1) var(--rb-ease);
-}
-.rb-cta-whisper__link:hover {
-  color: var(--rb-red-500);
-  border-bottom-color: var(--rb-red-500);
-}
-.rb-cta-whisper__link::after {
-  content: "→";
-  display: inline-block;
-  transition: transform var(--rb-dur-1) var(--rb-ease);
-}
-.rb-cta-whisper__link:hover::after { transform: translateX(3px); }
-.rb-cta-whisper__meta {
-  display: block;
-  margin-top: var(--rb-space-3);
-  font-family: var(--rb-font-body);
-  font-size: 12px;
-  letter-spacing: var(--rb-tracking-wide);
-  color: var(--rb-ink-500);
 }
 
 /* ============================================================
@@ -1545,49 +1326,12 @@ a { color: inherit; }
   display: flex; justify-content: space-between; align-items: center;
   font-size: 12px; color: var(--rb-gold-300);
 }
-.rb-footer__bottom .rb-rule-flourish { margin: 0 var(--rb-space-5); flex: 1; }
-.rb-footer__bottom .rb-rule-flourish::before,
-.rb-footer__bottom .rb-rule-flourish::after { opacity: 0.35; }
-/* Subtle brand anchor: the diamond between the two footer hairlines carries
-   Rubedo-Red — the lines stay gold. A single, intentional micro-accent. */
-.rb-footer__bottom .rb-rule-flourish__diamond {
-  background: var(--rb-red-500);
-  width: 7px; height: 7px;
-}
-
-/* ============================================================
-   FORM ACCENTS — required marker + inline errors
-   Red 500 als „bezahltes" Rot: funktional bedeutet, nicht dekorativ.
-   ============================================================ */
-.rb-required {
-  color: var(--rb-red-500);
-  font-style: normal;
-  font-weight: 500;
-  margin-left: 2px;
-}
-.rb-form-error,
-.rb-field-error {
-  /* Inline-Error neben/unter einem Field. Carnelian (functional --rb-error),
-     nicht Red 500 — damit der Markenrot exklusiv für Brand-Akzente bleibt. */
-  display: block;
-  color: var(--rb-error);
-  font-size: 13px;
-  letter-spacing: 0.02em;
-  margin-top: 6px;
-  line-height: 1.4;
-}
-/* :user-invalid statt :invalid: Felder werden erst rot, NACHDEM der User
-   sie verlassen oder den Submit-Button gedrückt hat — nicht schon beim
-   Pageload. Wider unterstützt seit Chrome 119 / Safari 16.5 / FF 88. */
-input:user-invalid:not(:focus),
-textarea:user-invalid:not(:focus) {
-  border-color: var(--rb-error);
-}
+.rb-footer__bottom .rb-rule-flourish { margin: 0 var(--rb-space-5); flex: 1; opacity: 0.4; }
 
 /* ============================================================
    BUTTONS (extends rb-btn from tokens.css with motion)
    ============================================================ */
-.rb-btn { transition: all var(--rb-dur-1) var(--rb-ease); white-space: nowrap; }
+.rb-btn { transition: all var(--rb-dur-1) var(--rb-ease); }
 .rb-btn--lg { padding: 16px 32px; font-size: 13px; }
 .rb-btn--primary:hover { transform: translateY(-1px); box-shadow: var(--rb-shadow-md); }
 .rb-btn--ghost-light { background: transparent; color: var(--rb-paper); border: 1px solid rgba(255,255,255,0.5); padding: 14px 28px;
@@ -1662,14 +1406,6 @@ textarea:user-invalid:not(:focus) {
   .rb-gallery__cell { height: 240px; }
   .rb-block-hero--photo .rb-block-hero__photo { height: 480px; }
   .rb-nav { display: none; }
-  /* Mobile: Logo bekommt etwas mehr Atemraum vom linken Viewport-Rand */
-  .rb-header__inner { padding-left: var(--rb-space-2); padding-right: var(--rb-space-2); }
-}
-
-/* Sehr schmale Phones: Topbar darf bündig zum Inner-Padding sein */
-@media (max-width: 480px) {
-  .rb-header__inner { padding: 12px var(--rb-space-3); }
-  .rb-brand--logo .rb-brand__logo { width: 56px; height: 56px; flex: 0 0 56px; }
 }
 
 /* ============================================================
@@ -3316,23 +3052,12 @@ textarea:user-invalid:not(:focus) {
   text-wrap: balance;
 }
 .rb-pull cite {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--rb-space-3);
   font-family: var(--rb-font-body);
   font-style: normal;
   font-size: 12px;
   letter-spacing: var(--rb-tracking-widest);
   text-transform: uppercase;
   color: var(--rb-gold-700);
-}
-.rb-pull cite::before {
-  content: "";
-  display: inline-block;
-  width: 5px; height: 5px;
-  background: var(--rb-red-500);
-  transform: rotate(45deg);
-  opacity: 0.85;
 }
 
 /* --- Block · Outcome (Nach 12 Wochen) --- */

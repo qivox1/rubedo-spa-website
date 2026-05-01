@@ -33,15 +33,44 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
     </a>
 
     <nav class="rb-nav" aria-label="Hauptnavigation">
-      {navItems.map((item) => (
-        <a
-          class={`rb-nav__item${isActive(item.href) ? ' is-active' : ''}${item.children ? ' rb-nav__item--has-sub' : ''}`}
-          href={item.href}
-          aria-current={isActive(item.href) ? 'page' : undefined}
-        >
-          {item.label}
-        </a>
-      ))}
+      {navItems.map((item, idx) => {
+        const hasChildren = !!item.children && item.children.length > 0;
+        const active = isActive(item.href);
+        const linkClasses = `rb-nav__item${active ? ' is-active' : ''}${hasChildren ? ' rb-nav__item--has-sub' : ''}`;
+        if (!hasChildren) {
+          return (
+            <a class={linkClasses} href={item.href} aria-current={active ? 'page' : undefined}>{item.label}</a>
+          );
+        }
+        const flyoutId = `nav-flyout-${idx}`;
+        return (
+          <div class="rb-nav__group" data-nav-group>
+            <a
+              class={linkClasses}
+              href={item.href}
+              aria-current={active ? 'page' : undefined}
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls={flyoutId}
+              data-nav-trigger
+            >
+              {item.label}
+            </a>
+            <div class="rb-nav__flyout" id={flyoutId} role="menu" aria-label={`${item.label} — Untermenü`}>
+              <a class="rb-nav__flyout-link rb-nav__flyout-link--lead" href={item.href} role="menuitem">
+                <span class="rb-nav__flyout-head">{item.label} · Übersicht</span>
+                <span class="rb-nav__flyout-desc">Zur Hauptseite</span>
+              </a>
+              {item.children!.map((child) => (
+                <a class="rb-nav__flyout-link" href={child.href} role="menuitem">
+                  <span class="rb-nav__flyout-head">{child.label}</span>
+                  {child.description && <span class="rb-nav__flyout-desc">{child.description}</span>}
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
     </nav>
 
     <a class="rb-btn rb-btn--primary rb-header__cta" href="/termin-buchen/">Termin buchen</a>
