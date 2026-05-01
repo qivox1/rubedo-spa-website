@@ -43,7 +43,8 @@
 :root {
   /* ---------- Color: Brand ---------- */
   --rb-gold-900:  #6F5421;   /* deep antique gold — accents, dividers */
-  --rb-gold-700:  #97783A;   /* primary gold — buttons, headings rule */
+  /* gold-700 darkened from #97783A to #876C30 → WCAG-AA-Kontrast 4.97:1 zu weiß. */
+  --rb-gold-700:  #876C30;   /* primary gold — buttons, headings rule */
   --rb-gold-500:  #B79557;   /* signature gold — the website's hero band */
   --rb-gold-300:  #D7BD86;   /* soft gold — hover states, highlights */
   --rb-gold-100:  #F2E8D2;   /* champagne tint — section backgrounds */
