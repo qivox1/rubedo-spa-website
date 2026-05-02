@@ -1396,12 +1396,18 @@ a { color: inherit; }
 .rb-block-cta {
   padding: var(--rb-space-8) 0;
 }
+/* CTA-Banner — Cream-Variante (vorher Ink-900).
+   Der dunkle Banner hatte direkt vorm dunklen Footer eine massive
+   schwarze Fläche am Seitenende erzeugt. Jetzt: Cream-Setzung mit
+   feiner Gold-Hairline als editorial Rahmung. Headline in Cormorant
+   auf Ink-900, Eyebrow in Gold-700 (statt Gold-300 für dunkel),
+   subtile Gold-Patina rechts oben statt White-Wash. */
 .rb-cta-band {
   display: grid; grid-template-columns: 1fr auto;
   align-items: center; gap: var(--rb-space-7);
-  /* dunkler Tinten-BG statt gold-500 — WCAG-AA-Kontrast für weißen Text. */
-  background: var(--rb-ink-900);
-  color: var(--rb-paper);
+  background: var(--rb-cream);
+  color: var(--rb-ink-900);
+  border: 1px solid var(--rb-gold-300);
   border-radius: var(--rb-radius-md);
   padding: var(--rb-space-7) var(--rb-space-8);
   position: relative;
@@ -1410,12 +1416,12 @@ a { color: inherit; }
 .rb-cta-band::before {
   content: ""; position: absolute; inset: 0;
   background:
-    radial-gradient(50% 100% at 100% 0, rgba(255,255,255,0.15), transparent 60%);
+    radial-gradient(50% 100% at 100% 0, rgba(183, 149, 87, 0.10), transparent 60%);
   pointer-events: none;
 }
 .rb-cta-band__body { position: relative; }
 .rb-cta-band .rb-eyebrow {
-  color: var(--rb-gold-300); display: block; margin-bottom: 8px;
+  color: var(--rb-gold-700); display: block; margin-bottom: 8px;
 }
 .rb-cta-band h3 {
   font-family: var(--rb-font-display);
@@ -1423,15 +1429,33 @@ a { color: inherit; }
   font-size: clamp(24px, 2.4vw, 34px);
   margin: 0 0 6px;
   line-height: 1.2;
+  color: var(--rb-ink-900);
   text-wrap: balance;
   max-width: 28ch;
 }
 .rb-cta-band p {
-  margin: 0; opacity: 0.9; font-size: 14px; max-width: 38ch;
+  margin: 0; font-size: 14px; max-width: 38ch;
+  color: var(--rb-ink-700);
 }
 .rb-cta-band__action {
   position: relative;
   display: flex; align-items: center; gap: var(--rb-space-3);
+}
+/* Button-Override für Cream-Kontext: rb-btn--ghost-light wird auf hellem
+   Hintergrund unsichtbar (white-on-cream). Hier: dunkler Border + Ink-Text,
+   im Hover invertiert zu vollem Ink-900-Block — wirkt wie ein gestempelter
+   Premium-Button im editorialen Banner-Setting. Vermeidet, dass wir alle
+   Pages anfassen müssen, die rb-btn--ghost-light im rb-cta-band nutzen. */
+.rb-cta-band .rb-btn--ghost-light {
+  color: var(--rb-ink-900);
+  border-color: var(--rb-ink-900);
+  background: transparent;
+  transition: background var(--rb-dur-1) var(--rb-ease),
+              color var(--rb-dur-1) var(--rb-ease);
+}
+.rb-cta-band .rb-btn--ghost-light:hover {
+  background: var(--rb-ink-900);
+  color: var(--rb-paper);
 }
 
 /* ============================================================
@@ -1663,12 +1687,31 @@ a { color: inherit; }
 /* ============================================================
    FOOTER
    ============================================================ */
+/* Sanfter Übergang am Footer-Top — 80 px Verlauf von Cream-transparent
+   zu Footer-Schwarz. Wirkt wie ein verblassender Lichtschein an der
+   oberen Footer-Kante: aus dem hellen Body fließt das Cream weich in
+   die dunkle Footer-Fläche, statt einer harten Klippe. Das ::before-
+   Element liegt VOR dem Footer-Inhalt (z-index implizit 0) und ist
+   pointer-events:none, damit es keine Klicks abfängt. Die border-top-
+   Hairline bleibt als feine Gold-Akzent-Linie erhalten. */
 .rb-footer {
+  position: relative;
   background: var(--rb-ink-900);
   color: var(--rb-gold-100);
   padding: var(--rb-space-9) 0 var(--rb-space-6);
   border-top: 1px solid rgba(215,189,134,0.15);
 }
+.rb-footer::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(180deg, var(--rb-cream) 0%, transparent 100%);
+  opacity: 0.18;
+  pointer-events: none;
+  z-index: 0;
+}
+.rb-footer > * { position: relative; z-index: 1; }
 .rb-footer__top {
   display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
   gap: var(--rb-space-6);
