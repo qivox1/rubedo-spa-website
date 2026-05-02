@@ -1214,13 +1214,27 @@ a { color: inherit; }
   text-wrap: pretty;
 }
 .rb-imgtext__body ul {
+  list-style: none;
+  padding-left: 22px;
   font-size: 16px; line-height: 1.7;
   color: var(--rb-ink-700);
   padding-left: 22px; margin: 0 0 var(--rb-space-4);
 }
-/* Image-Text-Listen: List-Marker in Rubedo-Red, konsistent zu .rb-prose. */
-.rb-imgtext__body ul li::marker { color: var(--rb-red-500); }
-.rb-imgtext__body ul li { margin-bottom: 8px; }
+/* Image-Text-Listen: Red-500 Diamond-Marker — konsistent zu .rb-prose und
+   .rb-mag-prose. Vorher: ::marker (nur Standard-Disc-Punkt, kaum sichtbar). */
+.rb-imgtext__body ul li {
+  position: relative;
+  margin-bottom: 8px;
+}
+.rb-imgtext__body ul li::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 12px;
+  width: 5px; height: 5px;
+  background: var(--rb-red-500);
+  transform: rotate(45deg);
+}
 .rb-imgtext__body strong { color: var(--rb-ink-900); font-weight: 500; }
 
 /* ============================================================
@@ -1358,13 +1372,26 @@ a { color: inherit; }
   color: var(--rb-gold-700);
   margin: 0 0 var(--rb-space-3);
 }
+/* Credentials-Listen: Red-500 Mini-Diamond als Marker plus dashed Trenner.
+   Diamond in 4×4 (statt 5×5 wie im Body), weil die Listen-Schrift kompakter
+   ist (13px statt 17px). Konsistent zur Brand-Diamond-Sprache überall sonst. */
 .rb-cred ul { list-style: none; padding: 0; margin: 0; }
 .rb-cred li {
+  position: relative;
   font-size: 13px;
   line-height: 1.55;
   color: var(--rb-ink-700);
-  padding: 6px 0;
+  padding: 6px 0 6px 16px;
   border-bottom: 1px dashed var(--rb-ink-100);
+}
+.rb-cred li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 4px; height: 4px;
+  background: var(--rb-red-500);
+  transform: rotate(45deg);
 }
 .rb-cred li:last-child { border-bottom: 0; }
 
