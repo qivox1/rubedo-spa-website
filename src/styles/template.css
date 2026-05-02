@@ -1435,6 +1435,104 @@ a { color: inherit; }
 }
 
 /* ============================================================
+   BLOCK · CTA WHISPER (dezenter Inline-CTA für lange Pages)
+   Editorial, leise, premium. Kein dunkler Banner — sondern eine
+   ruhige Cream-Setzung mit Cormorant-Headline, einem Red-500-Diamant-
+   Eyebrow und einem Link-CTA (kein Pill-Button). Soll zwischen den
+   großen Content-Sektionen einer langen Page sitzen, ohne den
+   Lesefluss zu unterbrechen.
+   ============================================================ */
+.rb-block-cta-whisper {
+  padding: var(--rb-space-7) 0;
+}
+.rb-cta-whisper {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--rb-space-7) var(--rb-space-6);
+  background: var(--rb-cream);
+  border: 1px solid var(--rb-ink-100);
+  border-radius: var(--rb-radius-md);
+  position: relative;
+}
+.rb-cta-whisper::before {
+  /* feine Gold-Hairline oben + unten als ruhige editorial Klammer */
+  content: "";
+  position: absolute;
+  top: -1px; left: 50%; transform: translateX(-50%);
+  width: 64px; height: 2px;
+  background: var(--rb-gold-500);
+  opacity: 0.6;
+}
+.rb-cta-whisper__eyebrow {
+  display: inline-flex; align-items: center; gap: var(--rb-space-3);
+  font-family: var(--rb-font-body);
+  font-size: var(--rb-text-xs);
+  font-weight: 500;
+  letter-spacing: var(--rb-tracking-widest);
+  text-transform: uppercase;
+  color: var(--rb-ink-700);
+  margin-bottom: var(--rb-space-3);
+}
+.rb-cta-whisper__eyebrow::before,
+.rb-cta-whisper__eyebrow::after {
+  content: "";
+  width: 5px; height: 5px;
+  background: var(--rb-red-500);
+  transform: rotate(45deg);
+  opacity: 0.85;
+}
+.rb-cta-whisper h3 {
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  font-size: clamp(24px, 2.6vw, 32px);
+  line-height: 1.2;
+  color: var(--rb-ink-900);
+  margin: 0 0 var(--rb-space-3);
+  text-wrap: balance;
+}
+.rb-cta-whisper p {
+  font-family: var(--rb-font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--rb-ink-700);
+  margin: 0 auto var(--rb-space-5);
+  max-width: 52ch;
+}
+.rb-cta-whisper__link {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--rb-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: var(--rb-tracking-wider);
+  text-transform: uppercase;
+  color: var(--rb-gold-700);
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--rb-gold-300);
+  transition: color var(--rb-dur-1) var(--rb-ease),
+              border-bottom-color var(--rb-dur-1) var(--rb-ease);
+}
+.rb-cta-whisper__link:hover {
+  color: var(--rb-red-500);
+  border-bottom-color: var(--rb-red-500);
+}
+.rb-cta-whisper__link::after {
+  content: "→";
+  display: inline-block;
+  transition: transform var(--rb-dur-1) var(--rb-ease);
+}
+.rb-cta-whisper__link:hover::after { transform: translateX(3px); }
+.rb-cta-whisper__meta {
+  display: block;
+  margin-top: var(--rb-space-3);
+  font-family: var(--rb-font-body);
+  font-size: 12px;
+  letter-spacing: var(--rb-tracking-wide);
+  color: var(--rb-ink-500);
+}
+
+/* ============================================================
    BLOCK · DISCLAIMER (HWG-Hinweis)
    ============================================================ */
 .rb-block-disclaimer {
@@ -1532,21 +1630,35 @@ a { color: inherit; }
   font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--rb-gold-300);
 }
+/* Kontakt-Liste — gestylt für hellen Body-Kontext (Cream/Paper-Background).
+   Vorher: Color auf var(--rb-paper) (= Weiß) und Eyebrow-Strong auf
+   Gold-300 — beides ist auf hellem Hintergrund praktisch unsichtbar (das
+   Pattern war ursprünglich für einen dunklen Footer-Kontext gedacht und
+   wurde dann nach /kontakt/ übernommen ohne Kontrast-Anpassung).
+   Jetzt: Werte in Ink-900 für volle Lesbarkeit, Labels in Gold-700,
+   Trennlinien in Cream — passt zum Premium-Light-Body. */
 .rb-contact__list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--rb-space-4); }
 .rb-contact__list li {
   display: grid; grid-template-columns: 100px 1fr;
   gap: var(--rb-space-4);
   font-size: 15px;
+  color: var(--rb-ink-900);
   padding-bottom: var(--rb-space-3);
-  border-bottom: 1px solid rgba(215,189,134,0.18);
+  border-bottom: 1px solid var(--rb-cream);
 }
 .rb-contact__list li strong {
   font-family: var(--rb-font-body); font-weight: 500;
   font-size: 11px; letter-spacing: 0.18em;
-  text-transform: uppercase; color: var(--rb-gold-300);
+  text-transform: uppercase; color: var(--rb-gold-700);
   align-self: center;
 }
-.rb-contact__list a { color: var(--rb-paper); text-decoration: none; border-bottom: 1px solid var(--rb-gold-700); }
+.rb-contact__list a {
+  color: var(--rb-ink-900);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rb-gold-300);
+  transition: border-bottom-color var(--rb-dur-1) var(--rb-ease);
+}
+.rb-contact__list a:hover { border-bottom-color: var(--rb-red-500); }
 
 /* ============================================================
    FOOTER
