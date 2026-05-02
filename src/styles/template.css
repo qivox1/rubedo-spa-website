@@ -786,14 +786,33 @@ a { color: inherit; }
   font-size: 17px;
   line-height: 1.75;
   color: var(--rb-ink-700);
-  padding-left: 22px;
   margin: 0 0 var(--rb-space-5);
 }
-/* List-Marker in Rubedo-Red — das Dot vor jedem Listitem ist der einzige
-   farbige Akzent in einem ansonsten typografisch ruhigen Prose-Block.
-   Bringt Marken-Rot in jeden Magazin-Artikel, ohne den Lesefluss zu stören. */
-.rb-prose ul li::marker { color: var(--rb-red-500); }
-.rb-prose li { margin-bottom: var(--rb-space-3); }
+/* Numerierte Listen: Standard padding + native Marker bleiben. */
+.rb-prose ol { padding-left: 22px; }
+/* Aufzählungen: List-Style entfernt, stattdessen 5 px Red-500 Diamond-
+   Marker via ::before — konsistent zur Brand-Diamond-Sprache überall sonst
+   (Hero-Eyebrow, Footer-Flourish, Pull-Quote-Cite, Magazin-List-Marker).
+   Der vorherige ::marker mit Red-500 war nur ein winziger Disc-Punkt und
+   kaum wahrnehmbar. */
+.rb-prose ul {
+  list-style: none;
+  padding-left: 22px;
+}
+.rb-prose ul li {
+  position: relative;
+  margin-bottom: var(--rb-space-3);
+}
+.rb-prose ul li::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 14px;
+  width: 5px; height: 5px;
+  background: var(--rb-red-500);
+  transform: rotate(45deg);
+}
+.rb-prose ol li { margin-bottom: var(--rb-space-3); }
 .rb-prose strong { color: var(--rb-ink-900); font-weight: 500; }
 .rb-prose a { color: var(--rb-gold-700); border-bottom: 1px solid var(--rb-gold-300); text-decoration: none; }
 .rb-prose a:hover { color: var(--rb-gold-900); border-bottom-color: var(--rb-gold-700); }
