@@ -94,6 +94,23 @@ a { color: inherit; }
 .rb-topbar__meta { display: flex; gap: var(--rb-space-5); }
 .rb-topbar__meta span { display: inline-flex; align-items: center; gap: 6px; }
 
+/* Topbar-Trenner: kleiner Red-500 Diamant (4×4 px, rotiert).
+   Auf dem dunklen Ink-900-Streifen wirkt das Wordmark-Rot wie ein
+   Wachssiegel — sehr leiser, sehr edler Brand-Anker auf jeder Seite,
+   ganz oben im allerersten Pixel-Strip. Auf Mobile blenden wir die
+   Trenner aus, weil die Items dann untereinander stapeln. */
+.rb-topbar__sep {
+  display: inline-block;
+  width: 4px; height: 4px;
+  background: var(--rb-red-500);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+@media (max-width: 600px) {
+  .rb-topbar__sep { display: none; }
+}
+
 .rb-header {
   position: sticky; top: 0; z-index: 50;
   background: rgba(251, 248, 241, 0.94);
@@ -457,8 +474,11 @@ a { color: inherit; }
   display: inline-flex; align-items: center; gap: var(--rb-space-3);
   margin-bottom: var(--rb-space-5);
 }
+/* Eyebrow-Hairline: 32 px Strich VOR dem Eyebrow-Text — wechselt von
+   Gold 500 auf Red 500. Multipliziert sich auf jeder Section-Hero — ein
+   ruhiger Brand-Anker im gesamten Inhaltsraster. */
 .rb-block-hero__eyebrow::before {
-  content: ""; width: 32px; height: 1px; background: var(--rb-gold-500);
+  content: ""; width: 32px; height: 1px; background: var(--rb-red-500);
 }
 /* Inline-Mikro-Diamant in Rubedo-Red als Eyebrow-Trenner.
    Reserviert für die Homepage-Hero ("Longevity-Studio ◆ Minden") als
@@ -609,7 +629,10 @@ a { color: inherit; }
 .rb-block-hero--photo .rb-block-hero__micro,
 .rb-block-hero--photo .rb-block-hero__eyebrow { color: var(--rb-paper); }
 .rb-block-hero--photo .rb-block-hero__eyebrow { color: var(--rb-gold-300); }
-.rb-block-hero--photo .rb-block-hero__eyebrow::before { background: var(--rb-gold-300); }
+/* Auf Photo-Hero: Red 500 voll (wie der Eyebrow-Diamant) — der tonale
+   Kontrast zum umgebenden Gold-300-Eyebrow ist entscheidend, damit die
+   Hairline nicht im Goldton untergeht. */
+.rb-block-hero--photo .rb-block-hero__eyebrow::before { background: var(--rb-red-500); }
 .rb-block-hero--photo .rb-block-hero__subline { color: rgba(255,255,255,0.92); max-width: 38ch; }
 .rb-block-hero--photo .rb-block-hero__micro { color: rgba(255,255,255,0.75); }
 /* Auf Photo-Hero: Red 500 voll (nicht 300), weil der "·"-Trenner sonst im
@@ -707,7 +730,11 @@ a { color: inherit; }
   align-self: flex-start;
   transition: color var(--rb-dur-1), border-color var(--rb-dur-1);
 }
-.rb-pillar__link:hover { color: var(--rb-gold-900); border-bottom-color: var(--rb-gold-700); }
+/* Hover-State der Säulen-Links: Color bleibt Gold-900 für Lesbarkeit,
+   aber die Border-Bottom kippt auf Red 500 — jeder Mouse-Touch über die
+   drei Säulen gibt einen Brand-Moment, ohne dass Rot je permanente
+   Fläche bekommt. */
+.rb-pillar__link:hover { color: var(--rb-gold-900); border-bottom-color: var(--rb-red-500); }
 
 /* ============================================================
    BLOCK · PROSE (narrative text)
@@ -760,6 +787,28 @@ a { color: inherit; }
 .rb-prose strong { color: var(--rb-ink-900); font-weight: 500; }
 .rb-prose a { color: var(--rb-gold-700); border-bottom: 1px solid var(--rb-gold-300); text-decoration: none; }
 .rb-prose a:hover { color: var(--rb-gold-900); border-bottom-color: var(--rb-gold-700); }
+
+/* Markdown-Blockquote in Prose- und Magazin-Artikel-Bodies:
+   2 px Red-500 Left-Border plus moderate Einrückung. Macht Zitate visuell
+   als Brand-Moment im Lesefluss erkennbar, ohne die Typografie zu
+   verändern. Cream-Wash bewusst weggelassen — nur die Border ist
+   Brand-Anker, alles andere bleibt Lesetypografie. */
+.rb-prose blockquote,
+.rb-mag-prose blockquote {
+  margin: var(--rb-space-6) 0;
+  padding: 4px 0 4px var(--rb-space-5);
+  border-left: 2px solid var(--rb-red-500);
+  font-family: var(--rb-font-display);
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--rb-ink-900);
+  text-wrap: balance;
+}
+.rb-prose blockquote p,
+.rb-mag-prose blockquote p { margin: 0 0 var(--rb-space-3); font-size: inherit; line-height: inherit; color: inherit; }
+.rb-prose blockquote p:last-child,
+.rb-mag-prose blockquote p:last-child { margin-bottom: 0; }
 
 .rb-rule-flourish {
   display: flex; align-items: center; justify-content: center;
@@ -1733,6 +1782,23 @@ a { color: inherit; }
   color: var(--rb-ink-800);
 }
 .rb-mag-prose p { margin: 0 0 var(--rb-space-4); text-wrap: pretty; }
+
+/* Drop-Cap auf den ersten Absatz jedes Magazin-Artikels — klassisches
+   editorial Pattern: Initiale in Cormorant Garamond + Rubedo-Red als
+   Eröffnungs-Versal. Pro Artikel exakt ein Vorkommen, signalisiert
+   "hier beginnt der Text" und gibt dem Magazin-Body einen ruhigen
+   Premium-Anfang. ::first-letter wirkt nur auf das erste Zeichen des
+   ersten Absatzes; greift NICHT in Zitaten oder Listen. */
+.rb-mag-prose > p:first-of-type::first-letter {
+  font-family: var(--rb-font-display);
+  font-weight: 400;
+  color: var(--rb-red-500);
+  font-size: 4.6em;
+  line-height: 0.92;
+  float: left;
+  margin: 0.08em 0.12em -0.08em 0;
+  padding: 0;
+}
 .rb-mag-prose strong { color: var(--rb-ink-900); font-weight: 600; }
 .rb-mag-prose h2 {
   font-family: var(--rb-font-display);
@@ -1744,10 +1810,14 @@ a { color: inherit; }
   letter-spacing: -0.005em;
   scroll-margin-top: 32px;
 }
+/* H2-Hairline in Magazin-Artikeln (36 px Strich vor jeder Zwischen-
+   Überschrift) wechselt von Gold 500 auf Red 500. Sehr präsent über den
+   ganzen Artikel-Body verteilt — jeder Section-Beginn bekommt einen
+   leisen Brand-Anker. */
 .rb-mag-prose h2::before {
   content: ""; display: block;
   width: 36px; height: 1px;
-  background: var(--rb-gold-500);
+  background: var(--rb-red-500);
   margin-bottom: var(--rb-space-3);
 }
 .rb-mag-prose h3 {
@@ -2322,11 +2392,15 @@ a { color: inherit; }
 .rb-magov-featured__media:hover img { transform: scale(1.04); }
 .rb-magov-featured__badge {
   position: absolute; top: var(--rb-space-4); left: var(--rb-space-4);
-  background: var(--rb-gold-500); color: var(--rb-paper);
+  /* Brand-Markierung des Top-Artikels in Rubedo-Red — pro Magazin-Hub
+     genau ein Element, damit das wichtigste editorial Piece den
+     Markenkern trägt. Cream-Hairline als Stempel-Outline für Tiefe. */
+  background: var(--rb-red-500); color: var(--rb-paper);
   font-family: var(--rb-font-body); font-size: 10px; font-weight: 600;
   letter-spacing: var(--rb-tracking-widest); text-transform: uppercase;
   padding: 8px 14px;
   z-index: 2;
+  box-shadow: 0 1px 3px rgba(15,12,10,0.18);
 }
 
 .rb-magov-featured__body { padding: var(--rb-space-4) 0; }
