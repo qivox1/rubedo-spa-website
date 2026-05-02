@@ -1742,13 +1742,18 @@ a { color: inherit; }
 }
 
 /* Reading-Progress-Bar — reduzierte Premium-Variante.
-   Vorher: 2 px Gold-Verlauf-Bar, sehr "Tech-Blog"-Standard.
-   Jetzt: 2 px Hairline mit Red 500 als Brand-Anker, Track auf transparent
-   damit keine sekundäre Linie sichtbar bleibt. So bleibt das Element ein
-   leiser Indikator, kein dekoratives Statement. */
+   Vorher: 2 px Gold-Verlauf-Bar, sehr "Tech-Blog"-Standard, ZUSÄTZLICH
+   sticky mit z-index 30 → wurde vom sticky Header (z-index 50)
+   visuell verdeckt und war beim Scrollen unsichtbar.
+   Jetzt: position fixed am obersten Viewport-Rand mit z-index 60 (über
+   dem Header), 2 px Hairline in Red 500 als Brand-Anker, Track auf
+   transparent damit keine sekundäre Linie sichtbar bleibt. Standard-
+   Pattern für Reading-Progress (Medium, Substack). */
 .rb-mag-progress {
-  position: sticky; top: 0; z-index: 30;
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 60;
   height: 2px; background: transparent;
+  pointer-events: none;
 }
 .rb-mag-progress__bar {
   height: 100%; width: 0%;
