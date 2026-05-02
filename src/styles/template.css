@@ -473,8 +473,17 @@ a { color: inherit; }
   vertical-align: middle;
   flex-shrink: 0;
 }
-/* Auf Photo-Hero etwas heller, damit der Diamant auf dem Foto sichtbar bleibt. */
-.rb-block-hero--photo .rb-eyebrow__diamond { background: var(--rb-red-300); }
+/* Auf Photo-Hero: volles Rubedo-Red 500 (nicht der blasse 300er!), weil der
+   entscheidende Kontrast nicht der zum dunklen Foto-Hintergrund ist, sondern
+   der zum goldenen Eyebrow-Text drumherum. Red 300 würde tonale Distanz zum
+   Gold 300 verlieren und im Goldton untergehen. Diamant zusätzlich auf 8×8
+   angehoben + zarter Cream-Glow als "gestempelt"-Effekt für Lesbarkeit auf
+   dem Foto, ohne zur Fläche zu werden. */
+.rb-block-hero--photo .rb-eyebrow__diamond {
+  background: var(--rb-red-500);
+  width: 8px; height: 8px;
+  box-shadow: 0 0 0 1px rgba(251, 248, 241, 0.35);
+}
 .rb-block-hero h1 {
   font-family: var(--rb-font-display);
   font-weight: 400;
@@ -603,10 +612,10 @@ a { color: inherit; }
 .rb-block-hero--photo .rb-block-hero__eyebrow::before { background: var(--rb-gold-300); }
 .rb-block-hero--photo .rb-block-hero__subline { color: rgba(255,255,255,0.92); max-width: 38ch; }
 .rb-block-hero--photo .rb-block-hero__micro { color: rgba(255,255,255,0.75); }
-/* Auf dunklem Foto-Hero: heller Red 300, damit der Trenner gegen das
-   Foto wahrnehmbar bleibt. Niemals Red 300 verwenden, wenn der Hintergrund
-   hell ist — dort ist Red 500 das Brand-Rot. */
-.rb-block-hero--photo .rb-block-hero__micro span:not(:last-child)::after { color: var(--rb-red-300); opacity: 0.95; }
+/* Auf Photo-Hero: Red 500 voll (nicht 300), weil der "·"-Trenner sonst im
+   umliegenden Gold-300/Paper-Mikro-Text optisch verschwindet. Volle Opacity
+   damit der Punkt als Brand-Anker gegen die helle Mikro-Zeile lesbar bleibt. */
+.rb-block-hero--photo .rb-block-hero__micro span:not(:last-child)::after { color: var(--rb-red-500); opacity: 1; }
 .rb-block-hero--photo .rb-btn--ghost {
   border-color: rgba(255,255,255,0.6); color: var(--rb-paper);
 }
