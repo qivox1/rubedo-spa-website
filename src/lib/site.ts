@@ -107,7 +107,6 @@ export const site = {
         },
       ],
     },
-    { label: 'Monica', href: '/ueber-monica/' },
     {
       label: 'Magazin',
       href: '/magazin/',
@@ -116,6 +115,7 @@ export const site = {
         { label: 'Kryotherapie', href: '/magazin/kategorie/kryotherapie/', description: 'Hintergrund-Beiträge zu Kälteanwendungen.' },
       ],
     },
+    { label: 'Monica', href: '/ueber-monica/' },
     { label: 'Kontakt', href: '/kontakt/' },
   ],
 } as const;
