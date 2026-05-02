@@ -67,10 +67,17 @@ export const site = {
   // Drei Säulen sind unter "Anwendungen" zu einem Mega-Menu mit `groups` konsolidiert.
   // Konvention `children`: nur Einträge, deren URL sich vom Parent unterscheidet.
   // Konvention `groups`: pro Säule eine Spalte mit headingHref (Hub-Link) + items.
+  // Konvention `activePaths`: optionale, exklusive Liste von URL-Präfixen für
+  //   den Active-State. Wenn gesetzt, ersetzt sie das default startsWith(href)-
+  //   Matching. Notwendig, wenn (a) zwei Items denselben href teilen
+  //   (Philosophie + Anwendungen → /philosophie/) oder (b) ein Item für URLs
+  //   aktiv sein soll, die nicht unter seinem href liegen (Anwendungen ist
+  //   Hub für /dna-skin-intelligence/, /kryo-vital/, /inner-source/).
   nav: [
     {
       label: 'Philosophie',
       href: '/philosophie/',
+      activePaths: ['/philosophie/', '/longevity-studio-minden/'],
       children: [
         { label: 'Longevity-Studio Minden', href: '/longevity-studio-minden/', description: 'Studio, Mission, Werte und Standort in der Marienstraße.' },
       ],
@@ -78,6 +85,7 @@ export const site = {
     {
       label: 'Anwendungen',
       href: '/philosophie/',
+      activePaths: ['/dna-skin-intelligence/', '/kryo-vital/', '/inner-source/'],
       groups: [
         {
           heading: 'DNA Skin Intelligence',

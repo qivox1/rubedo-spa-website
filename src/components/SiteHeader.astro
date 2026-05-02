@@ -7,9 +7,23 @@ interface Props {
 }
 const { currentPath = '/' } = Astro.props;
 
-function isActive(href: string): boolean {
-  if (href === '/') return currentPath === '/';
-  return currentPath.startsWith(href);
+/**
+ * Aktiv-Logik mit drei Kaskadierungs-Stufen:
+ * 1. Wenn `activePaths` gesetzt: exakte Liste, exklusiv. Damit lässt sich
+ *    das Doppel-Match auflösen, wenn zwei Items denselben href teilen
+ *    (Philosophie + Anwendungen → beide /philosophie/), und ein Item kann
+ *    für URLs aktiv sein, die nicht unter seinem href liegen
+ *    (Anwendungen für /dna-skin-intelligence/ usw.).
+ * 2. Sonst: Sonderfall „/" — exakt-match, sonst würde Home auf jeder
+ *    Sub-Page aktiv sein.
+ * 3. Sonst: startsWith(href).
+ */
+function isActive(item: { href: string; activePaths?: ReadonlyArray<string> }): boolean {
+  if (item.activePaths && item.activePaths.length > 0) {
+    return item.activePaths.some((p) => currentPath === p || currentPath.startsWith(p));
+  }
+  if (item.href === '/') return currentPath === '/';
+  return currentPath.startsWith(item.href);
 }
 
 // Nav-Items mit optionalen children/groups flachklopfen für Astro-Templates
@@ -22,6 +36,7 @@ type NavMegaGroup = {
   items?: ReadonlyArray<NavChild>;
 };
 type NavGroup = NavLink & {
+  activePaths?: ReadonlyArray<string>;
   children?: ReadonlyArray<NavChild>;
   groups?: ReadonlyArray<NavMegaGroup>;
 };
@@ -48,7 +63,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
         const hasGroups = !!item.groups && item.groups.length > 0;
         const hasChildren = !!item.children && item.children.length > 0;
         const hasFlyout = hasGroups || hasChildren;
-        const active = isActive(item.href);
+        const active = isActive(item);
         const linkClasses = `rb-nav__item${active ? ' is-active' : ''}${hasFlyout ? ' rb-nav__item--has-sub' : ''}`;
         if (!hasFlyout) {
           return (
@@ -155,7 +170,7 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
         const hasGroups = !!item.groups && item.groups.length > 0;
         const hasChildren = !!item.children && item.children.length > 0;
         const hasFlyout = hasGroups || hasChildren;
-        const active = isActive(item.href);
+        const active = isActive(item);
         if (!hasFlyout) {
           return (
             <a class={`rb-mnav__link${active ? ' is-active' : ''}`} href={item.href} data-mobile-close-link>
