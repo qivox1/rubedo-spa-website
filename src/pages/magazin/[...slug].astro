@@ -204,24 +204,33 @@ if (data.faq && data.faq.length > 0) {
             )}
 
             {data.tags.length > 0 && (
-              <ul class="rb-mag-tags" aria-label="Tags">
-                {data.tags.map((tag) => <li>#{tag}</li>)}
-              </ul>
+              <p class="rb-mag-tags" aria-label="Themen dieses Beitrags">
+                <span class="rb-mag-tags__label">Themen</span>
+                {data.tags.map((tag, i) => (
+                  <>
+                    {i > 0 && <span class="rb-mag-tags__sep" aria-hidden="true">·</span>}
+                    <span class="rb-mag-tags__item">{tag}</span>
+                  </>
+                ))}
+              </p>
             )}
           </div>
 
         </div>
 
-        {/* Author-Box */}
+        {/* Author-Box · Briefkopf-Look — keine Hintergrund-Box mehr,
+            stattdessen Cream-Hairline als Schnitt + signaturartige Anmutung */}
         <aside class="rb-mag-author" aria-label="Über die Autorin">
-          <img class="rb-mag-author__avatar" src="/images/monica-portrait-96.webp" srcset="/images/monica-portrait-96.webp 1x, /images/monica-portrait-sm.webp 2x" alt={author.data.name} loading="lazy" width="96" height="96" />
-          <div class="rb-mag-author__body">
-            <div class="rb-eyebrow">Über die Autorin</div>
-            <h3>{author.data.name}</h3>
-            <p>{author.data.bio}</p>
-            {author.data.page && (
-              <a class="rb-pillar__link" href={author.data.page}>Vita ansehen →</a>
-            )}
+          <span class="rb-mag-author__eyebrow">Gezeichnet von</span>
+          <div class="rb-mag-author__row">
+            <img class="rb-mag-author__avatar" src="/images/monica-portrait-96.webp" srcset="/images/monica-portrait-96.webp 1x, /images/monica-portrait-sm.webp 2x" alt={author.data.name} loading="lazy" width="64" height="64" />
+            <div class="rb-mag-author__body">
+              <h3 class="rb-mag-author__name">{author.data.name}</h3>
+              <p class="rb-mag-author__bio">{author.data.bio}</p>
+              {author.data.page && (
+                <a class="rb-mag-author__link" href={author.data.page}>Zur Vita →</a>
+              )}
+            </div>
           </div>
         </aside>
 
@@ -276,75 +285,159 @@ if (data.faq && data.faq.length > 0) {
 </script>
 
 <style>
+  /* Themen-Zeile statt Hashtag-Pillen — eine ruhige Capitals-Liste mit
+     Mid-Dot-Trennern. Wirkt wie ein redaktioneller Kategorisierungs-
+     Hinweis am Artikelende, nicht wie eine Twitter-Tag-Cloud. */
   .rb-mag-tags {
-    display: flex; flex-wrap: wrap; gap: 8px;
-    list-style: none; padding: 0;
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 8px;
     margin: 48px 0 0;
-  }
-  .rb-mag-tags li {
     font-family: var(--rb-font-body);
-    font-size: var(--rb-text-sm);
-    color: var(--rb-ink-500);
-    padding: 4px 12px;
-    background: var(--rb-gold-50);
-    border-radius: var(--rb-radius-pill);
+    font-size: 11px;
+    letter-spacing: var(--rb-tracking-wider);
+    text-transform: uppercase;
   }
+  .rb-mag-tags__label {
+    color: var(--rb-gold-700);
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .rb-mag-tags__item {
+    color: var(--rb-ink-500);
+  }
+  .rb-mag-tags__sep {
+    color: var(--rb-red-500);
+    opacity: 0.85;
+    font-weight: 700;
+  }
+  /* FAQ-Block — Premium-Akkordeon mit Diamond-Marker.
+     Vorher: Standard-Disclosure mit großem '+' in Gold, Trennlinien in Ink-100.
+     Jetzt: Frage in Cormorant Display, Diamond-Marker in Red 500 (analog zur
+     Brand-Diamond-Logik überall sonst), Trennlinien in Cream — wirkt deutlich
+     editorialer und passt visuell zum Rest der Site. */
   .rb-mag-faq {
     margin-top: 64px;
-    padding-top: 48px;
-    border-top: 1px solid var(--rb-ink-100);
+    padding-top: 32px;
+    border-top: 1px solid var(--rb-cream);
   }
-  .rb-mag-faq h2 { font-family: var(--rb-font-display); margin-bottom: 24px; }
+  .rb-mag-faq h2 {
+    font-family: var(--rb-font-display);
+    font-weight: 400;
+    font-size: clamp(26px, 2.4vw, 34px);
+    margin: 0 0 24px;
+    color: var(--rb-ink-900);
+  }
   .rb-mag-faq__item {
-    border-bottom: 1px solid var(--rb-ink-100);
-    padding: 16px 0;
+    border-bottom: 1px solid var(--rb-cream);
+    padding: 18px 0;
   }
+  .rb-mag-faq__item:last-child { border-bottom: 0; }
   .rb-mag-faq__item summary {
-    font-family: var(--rb-font-body);
-    font-weight: 500;
+    font-family: var(--rb-font-display);
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.35;
     cursor: pointer;
     color: var(--rb-ink-900);
     list-style: none;
     position: relative;
     padding-right: 32px;
+    text-wrap: balance;
   }
   .rb-mag-faq__item summary::-webkit-details-marker { display: none; }
+  /* Diamond-Marker rechts: im closed-State 6×6 px Raute in Red 500,
+     im open-State zur vertikalen Hairline gestreckt — gleiche Brand-Logik
+     wie sonst überall, ohne Plus/Minus-Zeichen-Sprache. */
   .rb-mag-faq__item summary::after {
-    content: '+';
-    position: absolute; right: 0; top: 0;
-    font-size: 24px; line-height: 1;
-    color: var(--rb-gold-700);
-    transition: transform var(--rb-dur-1) var(--rb-ease);
+    content: '';
+    position: absolute; right: 4px; top: 8px;
+    width: 6px; height: 6px;
+    background: var(--rb-red-500);
+    transform: rotate(45deg);
+    transition: transform var(--rb-dur-2) var(--rb-ease),
+                width var(--rb-dur-2) var(--rb-ease),
+                height var(--rb-dur-2) var(--rb-ease);
   }
-  .rb-mag-faq__item[open] summary::after { transform: rotate(45deg); }
+  .rb-mag-faq__item[open] summary::after {
+    width: 2px; height: 14px;
+    transform: rotate(0);
+    right: 6px; top: 4px;
+  }
   .rb-mag-faq__item p {
-    margin: 12px 0 0;
+    margin: 14px 0 0;
     font-family: var(--rb-font-body);
+    font-size: 15px;
     color: var(--rb-ink-700);
-    line-height: var(--rb-leading-loose);
+    line-height: 1.65;
+    max-width: 64ch;
   }
+  /* Briefkopf-Author-Box: Hintergrund-Box ist ersatzlos weg.
+     Stattdessen ein Cream-Hairline als visueller Schnitt, darüber das
+     "Gezeichnet von"-Eyebrow als handschriftliches Signatur-Pattern.
+     Avatar 64×64 mit Cream-Stempel-Outline (analog Footer-Logo).
+     Wirkt wie eine signierte Briefseite, nicht wie ein WordPress-Block. */
   .rb-mag-author {
-    display: flex; gap: 24px;
-    margin-top: 64px;
-    padding: 32px;
-    background: var(--rb-gold-50);
-    border-radius: var(--rb-radius-md);
+    margin-top: 56px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rb-cream);
+  }
+  .rb-mag-author__eyebrow {
+    display: block;
+    font-family: var(--rb-font-body);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: var(--rb-tracking-widest);
+    text-transform: uppercase;
+    color: var(--rb-gold-700);
+    margin-bottom: 16px;
+  }
+  .rb-mag-author__row {
+    display: flex; gap: 18px;
     align-items: flex-start;
   }
   .rb-mag-author__avatar {
-    width: 96px; height: 96px;
+    width: 64px; height: 64px;
     border-radius: var(--rb-radius-pill);
     object-fit: cover;
     flex-shrink: 0;
+    background: var(--rb-cream);
+    box-shadow:
+      0 0 0 1px var(--rb-gold-300),
+      0 0 0 4px rgba(215, 189, 134, 0.10);
   }
-  .rb-mag-author__body h3 {
+  .rb-mag-author__body { padding-top: 2px; }
+  .rb-mag-author__name {
     font-family: var(--rb-font-display);
-    margin: 4px 0 8px;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+    color: var(--rb-ink-900);
+    margin: 0 0 6px;
   }
-  .rb-mag-author__body p {
+  .rb-mag-author__bio {
     font-family: var(--rb-font-body);
-    color: var(--rb-ink-700);
-    line-height: var(--rb-leading-loose);
-    margin: 0 0 12px;
+    font-size: 14px;
+    color: var(--rb-ink-500);
+    line-height: 1.55;
+    margin: 0 0 10px;
+    max-width: 56ch;
+  }
+  .rb-mag-author__link {
+    display: inline-block;
+    font-family: var(--rb-font-body);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: var(--rb-tracking-wide);
+    text-transform: uppercase;
+    color: var(--rb-gold-700);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rb-gold-300);
+    padding-bottom: 2px;
+    transition: border-color var(--rb-dur-1) var(--rb-ease), color var(--rb-dur-1) var(--rb-ease);
+  }
+  .rb-mag-author__link:hover {
+    color: var(--rb-ink-900);
+    border-bottom-color: var(--rb-red-500);
   }
 </style>
