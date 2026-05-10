@@ -17,7 +17,7 @@ tags:
 heroImage: "/images/magazin-wellness-hero.webp"
 heroImageAlt: "Klientin auf einer warmen Eichenholzbank im cremefarbenen Leinen-Wickel — neben ihr eine brushed-brass Spa-Wand und eine kleine Keramikschale, Burgund-Vorhang im Hintergrund"
 readingTime: 11
-featured: true
+featured: false
 draft: false
 toc:
   - id: was-ist-longevity
