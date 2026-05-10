@@ -23,7 +23,7 @@ toc:
   - id: was-passiert
     label: "Was physiologisch passiert"
   - id: aktivierung
-    label: "Warum wir Kryo Vital „Aktivierung" nennen"
+    label: "Warum wir Kryo Vital Aktivierung nennen"
   - id: drei-profile
     label: "Drei typische Profile"
   - id: studienlage
@@ -40,14 +40,14 @@ faq:
   - question: "Wie kalt ist es in der Kryo-Kabine?"
     answer: "Zwischen minus 85 °C und minus 110 °C — abhängig von Programm und Gerät. Der Aufenthalt dauert je nach Erfahrung ein bis drei Minuten."
   - question: "Friert man dabei?"
-    answer: "Anders als ein kalter Wind im Winter ist die Luft in der Kabine vollkommen trocken. Die meisten Gäste beschreiben den Aufenthalt als „prickelnd-frisch" — nicht als unangenehm kalt. Beim Verlassen der Kabine ist die Haut warm gerötet."
+    answer: "Anders als ein kalter Wind im Winter ist die Luft in der Kabine vollkommen trocken. Die meisten Gäste beschreiben den Aufenthalt als „prickelnd-frisch“ — nicht als unangenehm kalt. Beim Verlassen der Kabine ist die Haut warm gerötet."
   - question: "Ist die Anwendung gefährlich?"
     answer: "Bei korrekter Vorbereitung und ärztlicher Vorklärung im Erstgespräch ist eine Ganzkörper-Kryotherapie gut verträglich. Es gibt klare Kontraindikationen — siehe unten — die wir vor jedem Termin abfragen."
   - question: "Was ziehe ich an?"
     answer: "In der Kabine: Unterwäsche oder Bademode, plus Schutz-Set (Stirnband, Mundschutz, Handschuhe, Socken, Schuhe). Schmuck und Piercings vorher ablegen. Wir stellen das komplette Schutz-Set."
   - question: "Wie häufig sind Anwendungen sinnvoll?"
     answer: "Für regenerative Effekte sind zwei bis drei Anwendungen pro Woche typisch — meist über vier bis sechs Wochen, im Anschluss wöchentlich zur Erhaltung. Der Plan kommt aus dem Erstgespräch."
-  - question: "Warum sagt ihr nicht „Kryotherapie", sondern „Kryo Vital"?"
+  - question: "Warum sagt ihr nicht „Kryotherapie“, sondern „Kryo Vital“?"
     answer: "Therapie ist ein Begriff aus der Medizin. Wir arbeiten im Wellness-Kontext und nutzen Kälte als kontrollierten Reiz für Regeneration und Vitalität — nicht zur Behandlung von Krankheiten. Kryo Vital macht den Unterschied sichtbar."
 related:
   - wellness-minden-technologie
