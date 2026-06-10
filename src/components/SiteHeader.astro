@@ -35,10 +35,12 @@ type NavMegaGroup = {
   headingDesc?: string;
   items?: ReadonlyArray<NavChild>;
 };
+type NavFeature = NavLink & { description?: string };
 type NavGroup = NavLink & {
   activePaths?: ReadonlyArray<string>;
   children?: ReadonlyArray<NavChild>;
   groups?: ReadonlyArray<NavMegaGroup>;
+  feature?: NavFeature;
 };
 const navItems = site.nav as ReadonlyArray<NavGroup>;
 ---
@@ -103,6 +105,18 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
                     </div>
                   ))}
                 </div>
+                {item.feature && (
+                  <a class="rb-nav__mega-feature" href={item.feature.href} role="menuitem">
+                    <span class="rb-nav__mega-feature__icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="2"/></svg>
+                    </span>
+                    <span class="rb-nav__mega-feature__text">
+                      <span class="rb-nav__mega-feature__title">{item.feature.label}</span>
+                      {item.feature.description && <span class="rb-nav__mega-feature__desc">{item.feature.description}</span>}
+                    </span>
+                    <span class="rb-nav__mega-feature__arrow" aria-hidden="true">→</span>
+                  </a>
+                )}
               </div>
             ) : (
               <div class="rb-nav__flyout" id={flyoutId} role="menu" aria-label={`${item.label} — Untermenü`}>
@@ -198,19 +212,27 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
             <div class="rb-mnav__sublist" id={groupId} role="region" aria-label={`${item.label} — Untermenü`}>
               <div class="rb-mnav__sublist-inner">
                 {hasGroups ? (
-                  item.groups!.map((g) => (
-                    <div class="rb-mnav__megasection">
-                      <a class="rb-mnav__sublink rb-mnav__sublink--lead" href={g.headingHref} data-mobile-close-link>
-                        <span class="rb-mnav__subhead">{g.heading}</span>
-                        {g.headingDesc && <span class="rb-mnav__subtext">{g.headingDesc}</span>}
-                      </a>
-                      {g.items && g.items.length > 0 && g.items.map((it) => (
-                        <a class="rb-mnav__sublink rb-mnav__sublink--nested" href={it.href} data-mobile-close-link>
-                          <span class="rb-mnav__subhead">{it.label}</span>
+                  <>
+                    {item.groups!.map((g) => (
+                      <div class="rb-mnav__megasection">
+                        <a class="rb-mnav__sublink rb-mnav__sublink--lead" href={g.headingHref} data-mobile-close-link>
+                          <span class="rb-mnav__subhead">{g.heading}</span>
+                          {g.headingDesc && <span class="rb-mnav__subtext">{g.headingDesc}</span>}
                         </a>
-                      ))}
-                    </div>
-                  ))
+                        {g.items && g.items.length > 0 && g.items.map((it) => (
+                          <a class="rb-mnav__sublink rb-mnav__sublink--nested" href={it.href} data-mobile-close-link>
+                            <span class="rb-mnav__subhead">{it.label}</span>
+                          </a>
+                        ))}
+                      </div>
+                    ))}
+                    {item.feature && (
+                      <a class="rb-mnav__sublink rb-mnav__sublink--feature" href={item.feature.href} data-mobile-close-link>
+                        <span class="rb-mnav__subhead">{item.feature.label} →</span>
+                        {item.feature.description && <span class="rb-mnav__subtext">{item.feature.description}</span>}
+                      </a>
+                    )}
+                  </>
                 ) : (
                   <>
                     <a class="rb-mnav__sublink rb-mnav__sublink--lead" href={item.href} data-mobile-close-link>
@@ -552,6 +574,21 @@ const navItems = site.nav as ReadonlyArray<NavGroup>;
     color: var(--rb-ink-500);
   }
   .rb-mnav__sublink--lead .rb-mnav__subhead { color: var(--rb-gold-700); }
+
+  /* Hervorgehobene „Leistungen & Preise"-Zeile im Mobile-Anwendungen-Menü */
+  .rb-mnav__sublink--feature {
+    margin: 8px 16px 4px;
+    padding: 14px 18px;
+    border: 1px solid var(--rb-gold-300);
+    border-left: 1px solid var(--rb-gold-300);
+    border-radius: 8px;
+    background: rgba(183,149,87,0.08);
+  }
+  .rb-mnav__sublink--feature:hover {
+    background: rgba(183,149,87,0.14);
+    border-color: var(--rb-gold-500);
+  }
+  .rb-mnav__sublink--feature .rb-mnav__subhead { color: var(--rb-gold-700); font-weight: 600; }
 
   /* Mega-Sektionen im Mobile-Drawer (für Item „Anwendungen") —
      visuelle Trennung pro Säule mit Border-Top */

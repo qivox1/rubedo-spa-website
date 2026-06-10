@@ -85,7 +85,12 @@ export const site = {
     {
       label: 'Anwendungen',
       href: '/philosophie/',
-      activePaths: ['/dna-skin-intelligence/', '/kryo-vital/', '/inner-source/'],
+      activePaths: ['/dna-skin-intelligence/', '/kryo-vital/', '/inner-source/', '/leistungen/'],
+      feature: {
+        label: 'Leistungen & Preise',
+        href: '/leistungen/',
+        description: 'Alle Anwendungen mit Dauer und Preis auf einen Blick — inkl. MwSt.',
+      },
       groups: [
         {
           heading: 'DNA Skin Intelligence',
@@ -116,7 +121,6 @@ export const site = {
         },
       ],
     },
-    { label: 'Leistungen', href: '/leistungen/' },
     {
       label: 'Magazin',
       href: '/magazin/',
