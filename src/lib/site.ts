@@ -87,7 +87,7 @@ export const site = {
       href: '/philosophie/',
       activePaths: ['/dna-skin-intelligence/', '/kryo-vital/', '/inner-source/', '/leistungen/'],
       feature: {
-        label: 'Leistungen & Preise',
+        label: 'Leistungen – Preise',
         href: '/leistungen/',
         description: 'Alle Anwendungen mit Dauer und Preis auf einen Blick — inkl. MwSt.',
       },
