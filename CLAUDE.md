@@ -47,7 +47,7 @@ WICHTIG: `@import`-Statements MÜSSEN vor `@tailwind`-Direktiven stehen, sonst w
 
 ## Seiten-Stand (2026-06-10)
 
-17 Routen live. Neu seit dem Compliance-Update: `src/pages/agb/`, `src/pages/kryo-vital/kryo-facial/`, `src/pages/leistungen/`. Alle Preisblöcke tragen „inkl. MwSt."; HWG-/INCI-/NemV-Hinweise sind eingebaut (NemV-Hersteller noch Platzhalter). Testimonial-Sektion auf DNA Skin existiert, ist aber per `SHOW_TESTIMONIALS = false` deaktiviert. Details: `../2026-06-10_Umsetzungsreport_Aenderungswuensche_Monica.md`.
+17 Routen live. Neu seit dem Compliance-Update: `src/pages/agb/`, `src/pages/kryo-vital/kryo-facial/`, `src/pages/leistungen-preise/` (URL `/leistungen-preise/`, Titel „Leistungen und Preise"; alte `/leistungen/` → 301 in `public/_redirects`). Alle Preisblöcke tragen „inkl. MwSt."; HWG-/INCI-/NemV-Hinweise sind eingebaut (NemV-Hersteller noch Platzhalter). Testimonial-Sektion auf DNA Skin existiert, ist aber per `SHOW_TESTIMONIALS = false` deaktiviert. Details: `../2026-06-10_Umsetzungsreport_Aenderungswuensche_Monica.md`.
 
 ## Push (Achtung große Dateien)
 
