@@ -2,9 +2,9 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { site } from '@/lib/site';
 
-const title = 'Leistungen – Preise — Rubedo Spa Minden';
+const title = 'Leistungen und Preise — Rubedo Spa Minden';
 const description = 'Leistungen und Preise von Rubedo Spa Minden auf einen Blick: DNA Skin Intelligence, Kryo Vital und Inner Source Rituals — mit Dauer und Preis (inkl. MwSt.).';
-const url = `${site.url}/leistungen/`;
+const url = `${site.url}/leistungen-preise/`;
 
 type Row = { name: string; href?: string; dauer: string; preis: string };
 type Group = { saeule: string; href: string; image?: string; imageAlt?: string; rows: Row[] };
@@ -58,14 +58,14 @@ const groups: Group[] = [
 ];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} canonical={url}>
   <article class="rb-page" data-page="leistungen">
 
     <section class="rb-block-hero rb-block-hero--centered">
       <div class="rb-wrap rb-block-hero__inner">
         <div>
           <span class="rb-block-hero__eyebrow">Übersicht · Rubedo</span>
-          <h1>Leistungen &ndash; Preise.</h1>
+          <h1>Leistungen und Preise.</h1>
           <p class="rb-block-hero__subline" style="margin-left:auto;margin-right:auto;">Alle Anwendungen auf einen Blick — entlang der drei Säulen. Dauer und Preis transparent, inkl. gesetzlicher Mehrwertsteuer.</p>
         </div>
       </div>
@@ -75,14 +75,17 @@ const groups: Group[] = [
       <div class="rb-wrap rb-wrap--narrow">
         {groups.map((g) => (
           <div class="rb-leistung-group">
-            <a class="rb-leistung-group__title" href={g.href}>
-              {g.image && (
-                <span class="rb-leistung-group__thumb">
-                  <img src={g.image} alt={g.imageAlt} width="120" height="120" loading="lazy" decoding="async" />
+            {g.image ? (
+              <a class="rb-leistung-cover" href={g.href} aria-label={`${g.saeule} — zur Hauptseite`}>
+                <img src={g.image} alt={g.imageAlt} width="680" height="180" loading="lazy" decoding="async" />
+                <span class="rb-leistung-cover__overlay">
+                  <h2 class="rb-leistung-cover__title">{g.saeule}</h2>
+                  <span class="rb-leistung-cover__cta">Zur Säule →</span>
                 </span>
-              )}
-              <h2 class="rb-leistung-group__name">{g.saeule}</h2>
-            </a>
+              </a>
+            ) : (
+              <h2 class="rb-leistung-group__plain"><a href={g.href}>{g.saeule}</a></h2>
+            )}
             <table class="rb-leistung-table">
               <thead>
                 <tr><th scope="col">Anwendung</th><th scope="col">Dauer</th><th scope="col">Preis</th></tr>
@@ -120,25 +123,52 @@ const groups: Group[] = [
 </BaseLayout>
 
 <style>
-  .rb-leistung-group { margin-bottom: 40px; }
-  .rb-leistung-group__title {
-    display: flex; align-items: center; gap: 16px;
-    margin: 0 0 14px; text-decoration: none;
-    padding-bottom: 14px; border-bottom: 1px solid var(--rb-ink-100);
+  .rb-leistung-group { margin-bottom: 48px; }
+
+  /* Cover-Banner pro Säule — Hauptbereichs-Bild gut erkennbar im Querformat,
+     Titel als Overlay unten links auf weichem Verlauf. */
+  .rb-leistung-cover {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 68 / 18;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    box-shadow: 0 6px 24px rgba(28,23,18,0.10);
+    text-decoration: none;
   }
-  .rb-leistung-group__thumb {
-    flex-shrink: 0; width: 56px; height: 56px;
-    border-radius: 12px; overflow: hidden;
-    border: 1px solid var(--rb-ink-100);
-    box-shadow: 0 2px 10px rgba(28,23,18,0.06);
+  .rb-leistung-cover img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 600ms cubic-bezier(.2,.65,.3,1);
   }
-  .rb-leistung-group__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .rb-leistung-group__name {
-    font-family: var(--rb-font-display); font-weight: 400; font-size: 24px;
-    line-height: 1.15; margin: 0; color: var(--rb-ink-900, inherit);
-    transition: color 220ms cubic-bezier(.2,.65,.3,1);
+  .rb-leistung-cover:hover img { transform: scale(1.04); }
+  .rb-leistung-cover__overlay {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    gap: 4px; padding: 18px 22px;
+    background: linear-gradient(to top, rgba(28,23,18,0.72) 0%, rgba(28,23,18,0.28) 45%, rgba(28,23,18,0) 75%);
   }
-  .rb-leistung-group__title:hover .rb-leistung-group__name { color: var(--rb-gold-700); }
+  .rb-leistung-cover__title {
+    font-family: var(--rb-font-display); font-weight: 400;
+    font-size: 26px; line-height: 1.1; margin: 0;
+    color: #fff; letter-spacing: 0.005em;
+  }
+  .rb-leistung-cover__cta {
+    font-family: var(--rb-font-body); font-size: 13px;
+    letter-spacing: 0.04em; color: rgba(255,255,255,0.85);
+    opacity: 0; transform: translateY(4px);
+    transition: opacity 320ms cubic-bezier(.2,.65,.3,1), transform 320ms cubic-bezier(.2,.65,.3,1);
+  }
+  .rb-leistung-cover:hover .rb-leistung-cover__cta,
+  .rb-leistung-cover:focus-visible .rb-leistung-cover__cta { opacity: 1; transform: translateY(0); }
+
+  .rb-leistung-group__plain { font-family: var(--rb-font-display); font-weight: 400; font-size: 24px; margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid var(--rb-ink-100); }
+  .rb-leistung-group__plain a { color: var(--rb-ink-900, inherit); text-decoration: none; }
+  .rb-leistung-group__plain a:hover { color: var(--rb-gold-700); }
+
   .rb-leistung-table { width: 100%; border-collapse: collapse; font-family: var(--rb-font-body); }
   .rb-leistung-table th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--rb-ink-500); font-weight: 500; padding: 8px 12px; border-bottom: 1px solid var(--rb-ink-100); }
   .rb-leistung-table td { font-size: 15px; color: var(--rb-ink-700); padding: 13px 12px; border-bottom: 1px dashed var(--rb-ink-100); }
@@ -147,7 +177,9 @@ const groups: Group[] = [
   .rb-leistung-table__price { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
   .rb-leistung-note { font-family: var(--rb-font-body); font-size: 13px; color: var(--rb-ink-500); line-height: 1.7; margin-top: 8px; }
   .rb-leistung-note a { color: var(--rb-gold-700); }
-  @media (max-width: 520px) {
+  @media (max-width: 560px) {
+    .rb-leistung-cover { aspect-ratio: 3 / 1.4; }
+    .rb-leistung-cover__title { font-size: 22px; }
     .rb-leistung-table th:nth-child(2), .rb-leistung-table td:nth-child(2) { display: none; }
   }
 </style>

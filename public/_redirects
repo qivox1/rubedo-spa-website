@@ -37,3 +37,7 @@
 # Übergangs-Redirect der alten statischen Beispielseite (Ordner darf gelöscht werden)
 /magazin/example-artikel                       /magazin/wellness-minden-technologie/                  301
 /magazin/example-artikel/                      /magazin/wellness-minden-technologie/                  301
+
+# Leistungsseite SEO-konform umbenannt (2026-06-10): /leistungen/ → /leistungen-preise/
+/leistungen                                    /leistungen-preise/                                    301
+/leistungen/                                   /leistungen-preise/                                    301
