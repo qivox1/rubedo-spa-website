@@ -130,7 +130,6 @@ export const site = {
       ],
     },
     { label: 'Monica', href: '/ueber-monica/' },
-    { label: 'Kontakt', href: '/kontakt/' },
   ],
 } as const;
 
